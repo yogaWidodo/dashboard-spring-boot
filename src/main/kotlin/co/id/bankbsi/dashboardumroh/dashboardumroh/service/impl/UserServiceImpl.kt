@@ -1,6 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.entity.User
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.CreateUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.ListUserRequest
