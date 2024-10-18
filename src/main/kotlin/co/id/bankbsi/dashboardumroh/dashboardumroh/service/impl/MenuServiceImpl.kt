@@ -1,6 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.entity.Menu
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Menu
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.CreateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.ListMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse

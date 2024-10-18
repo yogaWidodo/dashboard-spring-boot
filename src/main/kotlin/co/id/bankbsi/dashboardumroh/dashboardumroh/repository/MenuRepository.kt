@@ -1,6 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.repository
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.entity.Menu
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Menu
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MenuRepository:JpaRepository<Menu,String> {
