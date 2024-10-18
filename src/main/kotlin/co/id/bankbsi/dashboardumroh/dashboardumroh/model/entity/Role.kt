@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.entity
+package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity
 
 import jakarta.persistence.*
 

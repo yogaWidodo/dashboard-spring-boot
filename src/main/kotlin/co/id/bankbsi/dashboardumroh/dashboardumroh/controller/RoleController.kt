@@ -6,6 +6,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.RoleResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.RoleService
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
@@ -27,6 +28,20 @@ class RoleController(val roleService: RoleService) {
             data = roleResponse
         )
     }
+
+    @GetMapping(
+        value = ["/api/role/{id}"],
+        produces = ["application/json"]
+    )
+    fun get(@PathVariable id:String):WebResponse<RoleResponse>{
+        val roleResponse = roleService.get(id)
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = roleResponse
+        )
+    }
+
     @GetMapping(
         value = ["/api/role"],
         produces = ["application/json"]

@@ -9,4 +9,6 @@ interface RoleService {
     fun create(createroleRequest: CreateRoleRequest):RoleResponse
     fun list(listRoleRequest: ListRoleRequest):List<RoleResponse>
 
+    fun get(id:String):RoleResponse
+
 }
