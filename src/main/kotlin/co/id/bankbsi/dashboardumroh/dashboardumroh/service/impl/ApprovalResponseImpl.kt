@@ -1,7 +1,7 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.entity.Approval
-import co.id.bankbsi.dashboardumroh.dashboardumroh.entity.Auditrail
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Approval
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Auditrail
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.CreateApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.ListApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.ApprovalResponse
