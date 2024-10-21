@@ -6,6 +6,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.UserResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.UserService
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
@@ -21,6 +22,20 @@ class UserController(val userService: UserService) {
     )
     fun createUser(@RequestBody body: CreateUserRequest): WebResponse<UserResponse> {
         val userResponse = userService.create(body)
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = userResponse
+        )
+    }
+
+
+    @GetMapping(
+        value = ["/api/user/{id}"],
+        produces = ["application/json"]
+    )
+    fun get(@PathVariable id:String):WebResponse<UserResponse>{
+        val userResponse = userService.get(id)
         return WebResponse(
             code = 200,
             status = "OK",

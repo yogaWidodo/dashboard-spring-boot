@@ -31,7 +31,6 @@ class ApprovalController(val service: ApprovalService) {
     @GetMapping(
         value = ["/api/approval"],
         produces = ["application/json"],
-        consumes = ["application/json"]
     )
     fun listApproval(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
