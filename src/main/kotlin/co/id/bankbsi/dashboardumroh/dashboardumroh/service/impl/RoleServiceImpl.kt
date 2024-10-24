@@ -1,11 +1,13 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Role
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.CreateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.CreateRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.ListRoleRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.RoleResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.RoleService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
@@ -17,18 +19,15 @@ import java.util.stream.Collectors
 @Service
 class RoleServiceImpl(
     val roleRepository: RoleRepository,
-    val validationUtill: ValidationUtill
+    val menuRepository: MenuRepository,
+    val validationUtill: ValidationUtill,
 ) : RoleService {
     override fun create(createroleRequest: CreateRoleRequest): RoleResponse {
         validationUtill.validate(createroleRequest)
-
-        val role = Role(
-            idRole = createroleRequest.idRole,
-            namaRole = createroleRequest.namaRole,
-            idMenu = createroleRequest.idMenu
-        )
-        roleRepository.save(role)
-        return convertRoleToRoleResponse(role)
+        val role = Role(idRole = createroleRequest.idRole, namaRole = createroleRequest.namaRole)
+        val menus = menuRepository.findAllById(createroleRequest.idMenu)
+        role.menus = menus
+        return convertRoleToRoleResponse(roleRepository.save(role))
     }
 
     override fun list(listRoleRequest: ListRoleRequest): List<RoleResponse> {
@@ -46,7 +45,13 @@ class RoleServiceImpl(
         return RoleResponse(
             idRole = role.idRole,
             namaRole = role.namaRole,
-            idMenu = role.idMenu
+            menus = role.menus.map {
+                MenuResponse(
+                    idMenu = it.idMenu,
+                    namaMenu = it.namaMenu,
+                    status = it.status
+                )
+            }
         )
     }
 
@@ -56,7 +61,8 @@ class RoleServiceImpl(
         if (role == null) {
             throw NotFoundException()
         } else {
-            return role;
+            return role
         }
+
     }
 }

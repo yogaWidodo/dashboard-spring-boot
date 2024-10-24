@@ -8,4 +8,5 @@ interface UserService {
     fun create(createUserRequest: CreateUserRequest): UserResponse
     fun get(id:String): UserResponse
     fun list(listUserRequest: ListUserRequest):List<UserResponse>
+
 }

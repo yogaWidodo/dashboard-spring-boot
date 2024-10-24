@@ -64,8 +64,8 @@ class UserServiceImpl(
             unit = user.unit,
             idRole = user.idRole,
             status = user.status,
-            createdAt = Date(),
-            lastLogin = Date()
+            createdAt = user.createdAt,
+            lastLogin = user.lastLogin
         )
     }
 }

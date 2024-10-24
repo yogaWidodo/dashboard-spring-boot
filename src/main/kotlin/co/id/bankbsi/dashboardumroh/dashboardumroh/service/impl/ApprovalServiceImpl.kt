@@ -1,11 +1,9 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Approval
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Auditrail
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.CreateApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.ListApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.ApprovalResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuditrailResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.ApprovalRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.ApprovalService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
@@ -15,7 +13,7 @@ import java.util.*
 import java.util.stream.Collectors
 
 @Service
-class ApprovalResponseImpl(
+class ApprovalServiceImpl(
     val approvalRepository: ApprovalRepository,
     val validationUtill: ValidationUtill
 ) : ApprovalService {

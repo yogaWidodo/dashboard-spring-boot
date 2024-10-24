@@ -1,5 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Role
 import jakarta.validation.constraints.NotBlank
 
 
@@ -12,5 +13,6 @@ data class CreateMenuRequest (
     val namaMenu:String,
 
     @field:NotBlank
-    val status: String
+    val status: String,
+
 )

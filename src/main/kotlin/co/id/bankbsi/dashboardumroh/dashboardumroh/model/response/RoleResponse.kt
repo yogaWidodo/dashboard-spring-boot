@@ -6,5 +6,5 @@ data class RoleResponse(
 
     val namaRole:String,
 
-    val idMenu:String,
+    val menus:List<MenuResponse>,
 )

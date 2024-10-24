@@ -16,5 +16,7 @@ data class Menu(
     val namaMenu:String,
 
     @Column(name = "status")
-    val status: String
+    val status: String,
+
+
 )

@@ -6,5 +6,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
 
 interface MenuService {
     fun create(createMenuRequest: CreateMenuRequest): MenuResponse
+
+    fun get(id:String):MenuResponse
     fun list(listMenuRequest: ListMenuRequest): List<MenuResponse>
 }

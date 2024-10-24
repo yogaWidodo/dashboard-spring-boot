@@ -3,6 +3,8 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.util.Date
 
@@ -22,7 +24,7 @@ data class User(
     @Column(name = "unit")
     val unit: String,
 
-    @Column(name = "id_role")
+    @JoinColumn(name = "id_role")
     val idRole: String,
 
     @Column(name = "status")

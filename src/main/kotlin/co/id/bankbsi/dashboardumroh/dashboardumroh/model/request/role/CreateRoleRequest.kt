@@ -9,6 +9,5 @@ data class CreateRoleRequest (
     @field:NotBlank
     val namaRole:String,
 
-    @field:NotBlank
-    val idMenu:String,
+    val idMenu:MutableList<String>,
 )
