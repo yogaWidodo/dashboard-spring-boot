@@ -22,7 +22,7 @@ Request :
 - Body :
 
 ```json
- 
+
 {
   "id_user": "string, unique",
   "user_ldap": "string",
@@ -36,7 +36,7 @@ Request :
 Response :
 
 ```json
- 
+
 {
   "code": "number",
   "status": "string",
@@ -64,7 +64,7 @@ Request :
   Response :
 
 ```json
- 
+
 {
   "code": "number",
   "status": "string",
@@ -93,7 +93,7 @@ Request :
 - Body :
 
 ```json
- 
+
 {
   "name": "string",
   "unit": "string",
@@ -104,7 +104,7 @@ Request :
 Response :
 
 ```json
- 
+
 {
   "code": "number",
   "status": "string",
@@ -135,7 +135,7 @@ Request :
   Response :
 
 ```json
- 
+
 {
   "code": "number",
   "status": "string",
@@ -152,8 +152,8 @@ Request :
     }
   ]
 }
- 
- 
+
+
 ```
 
 ## Delete User
@@ -167,7 +167,7 @@ Request :
   Response :
 
 ```json
- 
+
 {
   "code": "number",
   "status": "string"
@@ -188,25 +188,31 @@ Request :
 - Body :
 
 ```json
- 
+
 {
   "idRole": "String",
   "namaRole": "String",
-  "idMenu": "String"
+  "idMenu": "Array <String>"
 }
 ```
 
 Response :
 
 ```json
- 
+
 {
   "code": "number",
   "status": "string",
   "data": {
     "idRole": "String",
     "namaRole": "String",
-    "idMenu": "String"
+    "idMenu": [
+      {
+        "idMenu": "String",
+        "namaMenu": "String",
+        "status": "String"
+      }
+    ]
   }
 }
 ```
@@ -222,14 +228,20 @@ Request :
   Response :
 
 ```json
- 
+
 {
   "code": "number",
   "status": "string",
   "data": {
     "idRole": "String",
     "namaRole": "String",
-    "idMenu": "String"
+    "idMenu": [
+      {
+        "idMenu": "String",
+        "namaMenu": "String",
+        "status": "String"
+      }
+    ]
   }
 }
 ```
@@ -239,32 +251,38 @@ Request :
 Request :
 
 - Method : PUT
-- Endpoint : `/api/role/{id_role}`
+- Endpoint : `/api/role/{id_role}/menu`
 - Header :
 - Content-Type: application/json
 - Accept: application/json
 - Body :
 
 ```json
- 
+
 {
-  "namaRole": "String",
-  "idMenu": "String"
+  "oldMenu": "String",
+  "newMenu": "String"
 }
 ```
 
 Response :
 
 ```json
- 
+
 {
   "code": "number",
   "status": "string",
   "data": {
     "idRole": "String",
     "namaRole": "String",
-    "idMenu": "String"
+    "idMenu": [
+      {
+        "idMenu": "String",
+        "namaMenu": "String",
+        "status": "String"
+      }
+    ]
   }
 }
- 
+
 ```
