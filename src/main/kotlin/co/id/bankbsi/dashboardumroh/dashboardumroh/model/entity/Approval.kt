@@ -15,29 +15,29 @@ data class Approval(
     val idApproval: String,
 
     @Column(name = "maker")
-    val maker:String,
+    var maker:String,
 
     @Column(name = "approver")
-    val approver:String,
+    var approver:String,
 
     @Column(name = "status")
-    val status :String,
+    var status :String,
 
     @Column(name = "type_data")
-    val typeData:String,
+    var typeData:String,
 
     @Column(name = "data_before")
-    val dataBefore:String,
+    var dataBefore:String,
 
     @Column(name = "data_after")
-    val dataAfter:String,
+    var dataAfter:String,
 
     @Column(name = "create_at")
     val createAt: Date,
 
     @Column(name = "update_at")
-    val updateAt:Date,
+    var updateAt:Date,
 
     @Column(name = "remark_approval")
-    val remarkApproval:String
+    var remarkApproval:String
     )

@@ -2,11 +2,14 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.service
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.CreateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.ListMenuRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.UpdateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
 
 interface MenuService {
     fun create(createMenuRequest: CreateMenuRequest): MenuResponse
 
     fun get(id:String):MenuResponse
+    fun update(id:String, updateMenuRequest: UpdateMenuRequest):MenuResponse
+    fun delete(id: String):MenuResponse
     fun list(listMenuRequest: ListMenuRequest): List<MenuResponse>
 }

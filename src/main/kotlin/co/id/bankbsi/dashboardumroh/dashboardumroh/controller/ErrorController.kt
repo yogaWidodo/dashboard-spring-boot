@@ -1,12 +1,15 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.controller
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.UnauthorizedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import jakarta.validation.ConstraintViolationException
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
+@CrossOrigin
 class ErrorController {
 
     @ExceptionHandler(value = [ConstraintViolationException::class])
@@ -17,6 +20,16 @@ class ErrorController {
             data = constraintViolationException.message!!
         )
     }
+
+    @ExceptionHandler(value = [NotFoundException::class])
+    fun notFoundException(exception: NotFoundException):WebResponse<String>{
+        return WebResponse(
+            code = 404,
+            status = "Not Found",
+            data = "Data Not Found"
+        )
+    }
+
 
     @ExceptionHandler(value = [UnauthorizedException::class])
     fun unAuthorizedException(exception: UnauthorizedException):WebResponse<String>{

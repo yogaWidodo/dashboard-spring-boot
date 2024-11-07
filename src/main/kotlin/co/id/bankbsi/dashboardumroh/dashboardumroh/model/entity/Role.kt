@@ -10,7 +10,7 @@ data class Role(
     val idRole:String,
 
     @Column(name = "nama_role")
-    val namaRole:String,
+    var namaRole:String,
 
     @OneToMany(targetEntity = Menu::class)
     var menus:MutableList<Menu> = mutableListOf()

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank
 import java.util.Date
 
 data class AuditrailResponse(
-    val auditrail: String,
+    val idAuditrail: String,
 
     val typeData: String,
     val createAt: Date,

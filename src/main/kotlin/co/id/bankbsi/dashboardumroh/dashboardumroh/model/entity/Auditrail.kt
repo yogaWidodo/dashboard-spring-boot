@@ -1,9 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.util.Date
 
 
@@ -16,16 +13,16 @@ data class Auditrail(
     val auditrail:String,
 
     @Column(name = "create_at")
-    val createAt:Date,
+    var createAt:Date,
 
     @Column(name = "type_data")
-    val typeData:String,
+    var typeData:String,
 
     @Column(name = "data_before")
-    val dataBefore:String,
+    var dataBefore:String,
 
     @Column(name = "data_after")
-    val dataAfter:String,
+    var dataAfter:String,
 
 
 )

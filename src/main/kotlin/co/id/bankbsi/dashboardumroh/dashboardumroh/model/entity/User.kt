@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import java.util.Date
 
@@ -19,16 +20,18 @@ data class User(
     val userLdap: String,
 
     @Column(name = "nama")
-    val nama: String,
+    var nama: String,
 
     @Column(name = "unit")
-    val unit: String,
+    var unit: String,
 
     @JoinColumn(name = "id_role")
-    val idRole: String,
+    @ManyToOne
+    val idRole: Role,
+
 
     @Column(name = "status")
-    val status: String,
+    var status: String,
 
     @Column(name = "created_at")
     val createdAt: Date,

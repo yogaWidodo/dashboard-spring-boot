@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank
 
 data class CreateAuditrailRequest(
     @field:NotBlank
-    val auditrail: String,
+    val idAuditrail: String,
 
     @field:NotBlank
     val typeData: String,

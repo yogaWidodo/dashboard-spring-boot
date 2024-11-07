@@ -5,6 +5,8 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.CreateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.CreateRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.ListRoleRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleMenuRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.RoleResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
@@ -34,6 +36,37 @@ class RoleServiceImpl(
         val page = roleRepository.findAll(PageRequest.of(listRoleRequest.page, listRoleRequest.size))
         val user = page.get().collect(Collectors.toList())
         return user.map { convertRoleToRoleResponse(it) }
+    }
+
+    override fun update(id: String, updateRoleRequest: UpdateRoleRequest): RoleResponse {
+        val user = findRoleByIdOrThrowNotFound(id)
+        validationUtill.validate(updateRoleRequest)
+        user.apply {
+            namaRole = updateRoleRequest.namaRole
+        }
+        roleRepository.save(user)
+        return convertRoleToRoleResponse(user)
+    }
+
+    override fun updateMenus(id: String, updateRoleMenuRequest: UpdateRoleMenuRequest): RoleResponse {
+        val role = findRoleByIdOrThrowNotFound(id)
+        validationUtill.validate(updateRoleMenuRequest)
+        role.apply {
+            val oldMenu = menus.find { it.idMenu == updateRoleMenuRequest.oldMenuId}
+            val newMenu = menuRepository.findByIdOrNull(updateRoleMenuRequest.newMenuId)
+                ?: throw NotFoundException()
+            if (oldMenu != null) {
+                menus.remove(oldMenu)
+                menus.add(newMenu)
+            }
+        }
+        roleRepository.save(role)
+        return convertRoleToRoleResponse(roleRepository.save(role))
+    }
+
+    override fun delete(id: String) {
+        findRoleByIdOrThrowNotFound(id)
+        roleRepository.deleteById(id)
     }
 
     override fun get(id: String): RoleResponse {

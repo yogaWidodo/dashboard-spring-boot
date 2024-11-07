@@ -13,10 +13,10 @@ data class Menu(
     val idMenu: String,
 
     @Column(name = "nama_menu")
-    val namaMenu:String,
+    var namaMenu:String,
 
     @Column(name = "status")
-    val status: String,
+    var status: String,
 
 
 )

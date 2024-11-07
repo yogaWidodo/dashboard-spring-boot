@@ -97,7 +97,7 @@ Request :
 {
   "name": "string",
   "unit": "string",
-  "status": "integer"
+  "status": "string"
 }
 ```
 
@@ -260,6 +260,7 @@ Request :
 ```json
 
 {
+  "namaRole": "String",
   "oldMenu": "String",
   "newMenu": "String"
 }
@@ -285,4 +286,21 @@ Response :
   }
 }
 
+```
+## Delete Role
+
+Request :
+
+- Method : DELETE
+- Endpoint : `/api/role/{id_role}`
+- Header :
+- Accept: application/json
+  Response :
+
+```json
+
+{
+  "code": "number",
+  "status": "string"
+}
 ```

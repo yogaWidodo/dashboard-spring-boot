@@ -5,6 +5,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Menu
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Role
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.CreateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.ListMenuRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.UpdateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
@@ -34,6 +35,23 @@ class MenuServiceImpl(
 
     override fun get(id: String): MenuResponse {
         val menu = findMenuByIdOrThrowNotFound(id)
+        return convertMenuToMenuResponse(menu)
+    }
+
+    override fun update(id: String, updateMenuRequest: UpdateMenuRequest): MenuResponse {
+        val menu = findMenuByIdOrThrowNotFound(id)
+        validationUtill.validate(updateMenuRequest)
+        menu.apply {
+            namaMenu = updateMenuRequest.namaMenu
+            status = updateMenuRequest.status
+        }
+        menuRepository.save(menu)
+        return convertMenuToMenuResponse(menu)
+    }
+
+    override fun delete(id: String): MenuResponse {
+        val menu = findMenuByIdOrThrowNotFound(id)
+        menuRepository.delete(menu)
         return convertMenuToMenuResponse(menu)
     }
 
