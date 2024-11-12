@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: umroh
+  datasource:
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/dashboard-umroh}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  key: ${JWT_KEY}
+  access-token-expiration: 3600000 # in milliseconds (1 hour)
+  refresh-token-expiration: 604800000 # in milliseconds (1 week)

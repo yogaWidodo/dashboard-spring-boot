@@ -12,6 +12,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.service.UserService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.stream.Collectors
@@ -20,20 +21,24 @@ import java.util.stream.Collectors
 class UserServiceImpl(
     val userRepository: UserRepository,
     val validationUtill: ValidationUtill,
-    val roleRepository: RoleRepository
+    val roleRepository: RoleRepository,
+    val encoder: PasswordEncoder
 ) : UserService {
+
     override fun create(createUserRequest: CreateUserRequest): UserResponse {
         validationUtill.validate(createUserRequest)
         val role = roleRepository.findById(createUserRequest.id_role).orElseThrow { NotFoundException() }
+
         val user = User(
             idUser = createUserRequest.id_user,
-            userLdap = createUserRequest.user_ldap,
             nama = createUserRequest.nama,
             unit = createUserRequest.unit,
             idRole = role,
             status = createUserRequest.status,
             createdAt = Date(),
-            lastLogin = Date()
+            lastLogin = Date(),
+            userLdap = createUserRequest.user_ldap,
+            password = encoder.encode(createUserRequest.password)
         )
         userRepository.save(user)
         return convertUserToUserResponse(user)
@@ -73,7 +78,7 @@ class UserServiceImpl(
         if (user == null) {
             throw NotFoundException()
         } else {
-            return user;
+            return user
         }
     }
 
@@ -86,7 +91,8 @@ class UserServiceImpl(
             role = user.idRole,
             status = user.status,
             createdAt = user.createdAt,
-            lastLogin = user.lastLogin
+            lastLogin = user.lastLogin,
+
         )
     }
 }

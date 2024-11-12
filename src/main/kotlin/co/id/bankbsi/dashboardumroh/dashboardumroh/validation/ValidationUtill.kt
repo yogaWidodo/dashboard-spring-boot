@@ -1,5 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.validation
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
 import jakarta.validation.ConstraintViolationException
 import jakarta.validation.Validator
 import org.springframework.stereotype.Component
@@ -13,4 +14,6 @@ class ValidationUtill(val validator:Validator) {
             throw ConstraintViolationException(result)
         }
     }
+
+
 }

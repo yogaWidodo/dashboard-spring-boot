@@ -20,4 +20,7 @@ data class CreateUserRequest(
 
     @field:NotBlank
     val status:String,
+
+    @field:NotBlank
+    val password:String,
 )

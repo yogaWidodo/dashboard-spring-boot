@@ -11,5 +11,5 @@ data class UserResponse(
     val unit:String,
     val status:String,
     val createdAt:Date,
-    val lastLogin:Date
+    val lastLogin:Date,
 )

@@ -5,7 +5,6 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import java.util.Date
 
@@ -29,7 +28,6 @@ data class User(
     @ManyToOne
     val idRole: Role,
 
-
     @Column(name = "status")
     var status: String,
 
@@ -37,5 +35,8 @@ data class User(
     val createdAt: Date,
 
     @Column(name = "last_login")
-    val lastLogin: Date
+    var lastLogin: Date,
+
+    @Column(name = "password")
+    var password: String,
 )
