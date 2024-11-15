@@ -38,7 +38,7 @@ class UserServiceImpl(
             createdAt = Date(),
             lastLogin = Date(),
             userLdap = createUserRequest.user_ldap,
-            password = encoder.encode(createUserRequest.password)
+            passwordLdap = encoder.encode(createUserRequest.password)
         )
         userRepository.save(user)
         return convertUserToUserResponse(user)

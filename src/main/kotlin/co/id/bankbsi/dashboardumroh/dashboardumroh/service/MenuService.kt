@@ -7,7 +7,6 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
 
 interface MenuService {
     fun create(createMenuRequest: CreateMenuRequest): MenuResponse
-
     fun get(id:String):MenuResponse
     fun update(id:String, updateMenuRequest: UpdateMenuRequest):MenuResponse
     fun delete(id: String):MenuResponse

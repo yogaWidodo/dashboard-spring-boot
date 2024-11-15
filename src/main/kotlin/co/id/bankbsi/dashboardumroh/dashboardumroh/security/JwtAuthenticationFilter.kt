@@ -1,7 +1,6 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.auth
+package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.CustomUserDetailService
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.TokenService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.CustomUserDetailService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -35,6 +34,7 @@ class JwtAuthenticationFilter(
             if (tokenService.isValid(jwtToken, foundUser)) {
                 updateContext(foundUser,request)
             }
+
             filterChain.doFilter(request, response)
         }
     }

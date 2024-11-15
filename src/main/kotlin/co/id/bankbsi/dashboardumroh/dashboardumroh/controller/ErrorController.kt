@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
-@CrossOrigin
 class ErrorController {
 
     @ExceptionHandler(value = [ConstraintViolationException::class])

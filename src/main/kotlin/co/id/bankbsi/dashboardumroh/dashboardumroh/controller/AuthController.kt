@@ -4,20 +4,19 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auth.Authentica
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auth.RefreshTokenRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuthenticationResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.TokenResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.AuthenticationService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.security.AuthenticationService
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin
 class AuthController(
     private val authenticationService: AuthenticationService
 ) {
     @PostMapping
+    @CrossOrigin
     fun authenticate(@RequestBody authRequest: AuthenticationRequest): AuthenticationResponse =
         authenticationService.authentication(authRequest)
 

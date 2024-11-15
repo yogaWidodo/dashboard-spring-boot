@@ -6,6 +6,9 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import java.util.Date
 
 @Entity
@@ -38,5 +41,24 @@ data class User(
     var lastLogin: Date,
 
     @Column(name = "password")
-    var password: String,
+    var passwordLdap: String,
 )
+//) : UserDetails {
+//    override fun getAuthorities(): Collection<GrantedAuthority> {
+//        return listOf(SimpleGrantedAuthority("ROLE_${idRole.namaRole}"))
+//    }
+//
+//    override fun getPassword(): String {
+//        return passwordLdap
+//    }
+//
+//    override fun getUsername(): String {
+//        return userLdap
+//    }
+//
+//
+//    override fun isAccountNonExpired(): Boolean = true
+//    override fun isAccountNonLocked(): Boolean = true
+//    override fun isCredentialsNonExpired(): Boolean = true
+//    override fun isEnabled(): Boolean = true
+

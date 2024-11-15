@@ -1,7 +1,8 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.config
+package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RefreshTokenRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.CustomUserDetailService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.CustomUserDetailService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -19,6 +20,7 @@ class Configuration {
     @Bean
     fun userDetailService(userRepository: UserRepository): UserDetailsService =
         CustomUserDetailService(userRepository)
+
 
     @Bean
     fun encoder(): PasswordEncoder = BCryptPasswordEncoder()

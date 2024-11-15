@@ -1,7 +1,7 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.service
+package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
+import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -10,17 +10,17 @@ import org.springframework.stereotype.Service
 typealias ApplicationUser = co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
 @Service
 class CustomUserDetailService(
-    private val userRepository:UserRepository
-) :UserDetailsService{
+    private val userRepository: UserRepository,
+) : UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails =
         userRepository.findByUserLdap(username)
             ?.mapToUserDetails()
             ?: throw UsernameNotFoundException("User not found")
 
     private fun ApplicationUser.mapToUserDetails(): UserDetails =
-        org.springframework.security.core.userdetails.User.builder()
+        User.builder()
             .username(this.userLdap)
-            .password(this.password)
+            .password(this.passwordLdap)
             .roles(this.idRole.namaRole)
             .build()
 

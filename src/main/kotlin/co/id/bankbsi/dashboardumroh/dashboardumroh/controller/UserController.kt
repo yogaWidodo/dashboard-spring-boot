@@ -6,17 +6,19 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.UpdateUser
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.UserResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.UserService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/")
 @CrossOrigin
+@PreAuthorize("hasRole('ADMIN')")
 class UserController(val userService: UserService) {
 
     @PostMapping(
         value = ["user"],
         produces = ["application/json"],
-        consumes = ["application/json"]
+        consumes = ["application/json"],
     )
     fun createUser(@RequestBody body: CreateUserRequest): WebResponse<UserResponse> {
         val userResponse = userService.create(body)
@@ -30,7 +32,8 @@ class UserController(val userService: UserService) {
 
     @GetMapping(
         value = ["user/{id}"],
-        produces = ["application/json"]
+        produces = ["application/json"],
+        headers = ["access-control-allow-origin=*"]
     )
     fun get(@PathVariable id:String):WebResponse<UserResponse>{
         val userResponse = userService.get(id)

@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.config
+package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
