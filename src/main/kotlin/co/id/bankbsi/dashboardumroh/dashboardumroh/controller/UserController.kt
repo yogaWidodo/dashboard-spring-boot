@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/")
 @CrossOrigin
-@PreAuthorize("hasRole('ADMIN')")
 class UserController(val userService: UserService) {
 
     @PostMapping(

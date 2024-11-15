@@ -1,6 +1,7 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.CustomUserDetailService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.TokenServiceImpl
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -14,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class JwtAuthenticationFilter(
     private val userDetailService: CustomUserDetailService,
-    private val tokenService: TokenService
+    private val tokenServiceImpl: TokenServiceImpl
 ) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -27,11 +28,11 @@ class JwtAuthenticationFilter(
             return
         }
         val jwtToken = authHeader!!.extractTokenValue()
-        val email = tokenService.extractEmail(jwtToken)
+        val email = tokenServiceImpl.extractEmail(jwtToken)
         if (email != null && SecurityContextHolder.getContext().authentication == null) {
             val foundUser = userDetailService.loadUserByUsername(email)
 
-            if (tokenService.isValid(jwtToken, foundUser)) {
+            if (tokenServiceImpl.isValid(jwtToken, foundUser)) {
                 updateContext(foundUser,request)
             }
 

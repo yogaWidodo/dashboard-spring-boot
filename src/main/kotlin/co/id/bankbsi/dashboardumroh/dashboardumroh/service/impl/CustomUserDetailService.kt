@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 typealias ApplicationUser = co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
+
 @Service
 class CustomUserDetailService(
     private val userRepository: UserRepository,

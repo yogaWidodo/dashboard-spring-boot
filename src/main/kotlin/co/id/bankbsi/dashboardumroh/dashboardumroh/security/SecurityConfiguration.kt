@@ -17,7 +17,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 @Configuration
 @EnableWebSecurity
-@EnableWebMvc
 class SecurityConfiguration(
     private val authenticationProvider: AuthenticationProvider
 ) {
@@ -30,7 +29,7 @@ class SecurityConfiguration(
             .csrf{ it.disable() }
             .authorizeHttpRequests{
                 it
-                    .requestMatchers("/api/auth","/api/auth/refresh")
+                    .requestMatchers("/api/auth","/api/auth/refresh","/error")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST,"/api/user")
                     .hasRole("ADMIN")
