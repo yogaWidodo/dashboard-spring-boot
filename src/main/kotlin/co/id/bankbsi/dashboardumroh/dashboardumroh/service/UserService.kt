@@ -5,6 +5,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.CreateUser
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.ListUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.UpdateUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.UserResponse
+import java.util.Date
 
 interface UserService {
     fun create(createUserRequest: CreateUserRequest): UserResponse
@@ -12,4 +13,5 @@ interface UserService {
     fun list(listUserRequest: ListUserRequest): List<UserResponse>
     fun delete(id: String)
     fun update(id: String, updateUserRequest: UpdateUserRequest): UserResponse
+    fun updateLastLogin(username: String, lastLogin: Date): UserResponse
 }

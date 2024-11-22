@@ -9,6 +9,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+server:
+  address: 0.0.0.0
+  port: 8080
+  
 #jdbc:postgresql://localhost:5432/dashboard-umroh
 
 jwt:

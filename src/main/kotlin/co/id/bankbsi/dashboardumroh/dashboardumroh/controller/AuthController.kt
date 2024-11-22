@@ -5,15 +5,17 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auth.RefreshTok
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuthenticationResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.TokenResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.security.AuthenticationService
+import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin
+@CrossOrigin(originPatterns = ["*"])
 class AuthController(
-    private val authenticationService: AuthenticationService
+    private val authenticationService: AuthenticationService,
 ) {
     @PostMapping
     fun authenticate(@RequestBody authRequest: AuthenticationRequest): AuthenticationResponse =

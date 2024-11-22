@@ -11,7 +11,7 @@ FROM openjdk:24-slim-bookworm
 WORKDIR /app
 
 # Copy the JAR file with the correct name
-COPY --from=build /app/build/libs/dashboardumroh-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/build/libs/dashboardumroh-0.0.1.jar app.jar
 
 # Expose the port the app runs on
 EXPOSE 8080
@@ -19,11 +19,10 @@ EXPOSE 8080
 # Set environment variables (replace with your actual values)
 ENV DATABASE_USERNAME=postgres
 ENV DATABASE_PASSWORD=postgres
-ENV DATABASE_URL=jdbc:postgresql://your_db_host:5432/dashboard-umroh
+ENV DATABASE_URL=jdbc:postgresql://localhost:5432/dashboard-umroh
 ENV JWT_KEY=sdsfasfasfasfasfewfafdsfldsfasdfsafsffffffffffffffffff
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s CMD curl -f http://localhost:8080/actuator/health || exit 1
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

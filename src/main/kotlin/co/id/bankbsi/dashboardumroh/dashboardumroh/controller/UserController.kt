@@ -11,14 +11,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/")
-@CrossOrigin
 class UserController(val userService: UserService) {
 
-    @PostMapping(
-        value = ["user"],
-        produces = ["application/json"],
-        consumes = ["application/json"],
-    )
+    @PostMapping("user")
     fun createUser(@RequestBody body: CreateUserRequest): WebResponse<UserResponse> {
         val userResponse = userService.create(body)
         return WebResponse(
@@ -29,12 +24,8 @@ class UserController(val userService: UserService) {
     }
 
 
-    @GetMapping(
-        value = ["user/{id}"],
-        produces = ["application/json"],
-        headers = ["access-control-allow-origin=*"]
-    )
-    fun get(@PathVariable id:String):WebResponse<UserResponse>{
+    @GetMapping("user/{id}")
+    fun get(@PathVariable id: String): WebResponse<UserResponse> {
         val userResponse = userService.get(id)
         return WebResponse(
             code = 200,
@@ -42,6 +33,7 @@ class UserController(val userService: UserService) {
             data = userResponse
         )
     }
+
     @PutMapping(
         value = ["user/{id}"],
         produces = ["application/json"],
@@ -49,7 +41,7 @@ class UserController(val userService: UserService) {
     )
     fun updateUser(
         @PathVariable id: String,
-        @RequestBody updateUserRequest:UpdateUserRequest
+        @RequestBody updateUserRequest: UpdateUserRequest
     ): WebResponse<UserResponse> {
         val userResponse = userService.update(id, updateUserRequest)
         return WebResponse(
@@ -58,6 +50,7 @@ class UserController(val userService: UserService) {
             data = userResponse
         )
     }
+
     @DeleteMapping(
         value = ["user/{id}"],
         produces = ["application/json"]
@@ -86,7 +79,6 @@ class UserController(val userService: UserService) {
             code = 200,
             status = "Succesfull",
             data = response
-
         )
     }
 }

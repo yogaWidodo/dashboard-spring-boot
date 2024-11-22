@@ -3,6 +3,7 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.security.config.Customizer
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -12,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 
 @Configuration
@@ -26,6 +26,7 @@ class SecurityConfiguration(
         jwtAuthenticationFilter: JwtAuthenticationFilter
     ):DefaultSecurityFilterChain =
         http
+            .cors {Customizer.withDefaults<CorsConfiguration>()}
             .csrf{ it.disable() }
             .authorizeHttpRequests{
                 it
@@ -46,17 +47,17 @@ class SecurityConfiguration(
             .build()
 
 
-//    @Bean
-//    fun corsConfiguration():CorsConfigurationSource{
-//        val config = CorsConfiguration()
-//        config.allowedOrigins = listOf("*")
-//        config.allowedMethods = listOf("GET","POST","PUT","DELETE","OPTIONS")
-//        config.allowedHeaders = listOf("*")
-//        config.allowCredentials = true
-//
-//        val urlBasedCorsConfigurationSource = UrlBasedCorsConfigurationSource()
-//        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",config)
-//        return urlBasedCorsConfigurationSource
-//    }
+    @Bean
+    fun corsConfiguration(): CorsConfigurationSource {
+        val config = CorsConfiguration()
+        config.allowedOrigins = listOf("*")
+        config.allowedMethods = listOf("GET","POST","PUT","DELETE","OPTIONS")
+        config.allowedHeaders = listOf("*")
+        config.allowCredentials = true
+
+        val urlBasedCorsConfigurationSource = UrlBasedCorsConfigurationSource()
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",config)
+        return urlBasedCorsConfigurationSource
+    }
 
 }

@@ -72,6 +72,17 @@ class UserServiceImpl(
         return convertUserToUserResponse(user)
     }
 
+    override fun updateLastLogin(username: String, lastLogin: Date): UserResponse {
+        val user = userRepository.findByUserLdap(username)
+        if (user != null) {
+            user.lastLogin = lastLogin
+            userRepository.save(user)
+            return convertUserToUserResponse(user)
+        } else {
+            throw NotFoundException()
+        }
+    }
+
 
     private fun findUserByIdOrThrowNotFound(id: String): User {
         val user = userRepository.findByIdOrNull(id)

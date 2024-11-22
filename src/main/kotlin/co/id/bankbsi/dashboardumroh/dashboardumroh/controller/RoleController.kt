@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/")
-@CrossOrigin
+@CrossOrigin(originPatterns = ["*"])
 class RoleController(val roleService: RoleService) {
     @PostMapping(
         value = ["role"],

@@ -1,8 +1,10 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.TokenService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.CustomUserDetailService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.TokenServiceImpl
 import jakarta.servlet.FilterChain
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -15,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class JwtAuthenticationFilter(
     private val userDetailService: CustomUserDetailService,
-    private val tokenServiceImpl: TokenServiceImpl
+    private val tokenService: TokenService
 ) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -28,14 +30,14 @@ class JwtAuthenticationFilter(
             return
         }
         val jwtToken = authHeader!!.extractTokenValue()
-        val email = tokenServiceImpl.extractEmail(jwtToken)
+        val email = tokenService.extractEmail(jwtToken)
         if (email != null && SecurityContextHolder.getContext().authentication == null) {
             val foundUser = userDetailService.loadUserByUsername(email)
 
-            if (tokenServiceImpl.isValid(jwtToken, foundUser)) {
+            if (tokenService.isValid(jwtToken, foundUser)) {
                 updateContext(foundUser,request)
             }
-
+//            setTokenCookie(response, jwtToken)
             filterChain.doFilter(request, response)
         }
     }
@@ -55,4 +57,13 @@ class JwtAuthenticationFilter(
 
     private fun String.extractTokenValue(): String =
         this.substringAfter("Bearer ")
+
+//
+//    private fun setTokenCookie(response: HttpServletResponse, token: String) {
+//        val cookie = Cookie("token", token)
+//        cookie.isHttpOnly = true
+//        cookie.path = "/"
+//        cookie.maxAge = 3600 // 1 hour
+//        response.addCookie(cookie)
+//    }
 }

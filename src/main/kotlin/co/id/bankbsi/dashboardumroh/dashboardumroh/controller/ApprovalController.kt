@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/")
-@CrossOrigin
+@CrossOrigin(originPatterns = ["*"])
 class ApprovalController(val service: ApprovalService) {
 
     @PostMapping(

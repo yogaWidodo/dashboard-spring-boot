@@ -3,13 +3,15 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.controller
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.UnauthorizedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
+import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.ConstraintViolationException
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.bind.annotation.*
 
 @RestControllerAdvice
+@CrossOrigin(originPatterns = ["*"])
 class ErrorController {
+
+
 
     @ExceptionHandler(value = [ConstraintViolationException::class])
     fun validationHandler(constraintViolationException: ConstraintViolationException): WebResponse<String> {
@@ -21,7 +23,7 @@ class ErrorController {
     }
 
     @ExceptionHandler(value = [NotFoundException::class])
-    fun notFoundException(exception: NotFoundException):WebResponse<String>{
+    fun notFoundException(exception: NotFoundException): WebResponse<String> {
         return WebResponse(
             code = 404,
             status = "Not Found",
@@ -31,7 +33,7 @@ class ErrorController {
 
 
     @ExceptionHandler(value = [UnauthorizedException::class])
-    fun unAuthorizedException(exception: UnauthorizedException):WebResponse<String>{
+    fun unAuthorizedException(exception: UnauthorizedException): WebResponse<String> {
         return WebResponse(
             code = 401,
             status = "Unauthorized",

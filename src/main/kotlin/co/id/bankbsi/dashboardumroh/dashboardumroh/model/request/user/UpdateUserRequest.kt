@@ -12,3 +12,8 @@ data class UpdateUserRequest(
     @field:NotBlank
     val status:String
 )
+
+data class UpdateLastLoginRequest(
+    @field:NotBlank
+    val lastLogin:String
+)

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/")
-@CrossOrigin
+@CrossOrigin(originPatterns = ["*"])
 class AuditrailController(val auditrailService: AuditrailService) {
 
     @PostMapping(

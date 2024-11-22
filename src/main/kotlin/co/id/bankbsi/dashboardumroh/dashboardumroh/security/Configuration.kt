@@ -22,6 +22,9 @@ class Configuration {
         CustomUserDetailService(userRepository)
 
 
+
+
+
     @Bean
     fun encoder(): PasswordEncoder = BCryptPasswordEncoder()
 
