@@ -1,9 +1,8 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.controller
+package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.UnauthorizedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
-import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.ConstraintViolationException
 import org.springframework.web.bind.annotation.*
 

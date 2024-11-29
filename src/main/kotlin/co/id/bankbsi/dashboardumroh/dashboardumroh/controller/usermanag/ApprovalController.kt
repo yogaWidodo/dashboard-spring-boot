@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.controller
+package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.CreateApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.ListApprovalRequest

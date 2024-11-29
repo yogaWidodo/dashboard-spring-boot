@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.controller
+package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.CreateUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.ListUserRequest
@@ -6,7 +6,6 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.UpdateUser
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.UserResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.UserService
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController

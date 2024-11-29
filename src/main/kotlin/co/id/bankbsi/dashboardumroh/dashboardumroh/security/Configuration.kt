@@ -1,6 +1,5 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RefreshTokenRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.CustomUserDetailService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
