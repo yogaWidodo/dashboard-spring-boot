@@ -23,9 +23,9 @@ class UserController(val userService: UserService) {
     }
 
 
-    @GetMapping("user/{id}")
-    fun get(@PathVariable id: String): WebResponse<UserResponse> {
-        val userResponse = userService.get(id)
+    @GetMapping("user/{username}")
+    fun get(@PathVariable username: String): WebResponse<UserResponse> {
+        val userResponse = userService.get(username)
         return WebResponse(
             code = 200,
             status = "OK",
@@ -39,10 +39,10 @@ class UserController(val userService: UserService) {
         consumes = ["application/json"]
     )
     fun updateUser(
-        @PathVariable id: String,
+        @PathVariable username: String,
         @RequestBody updateUserRequest: UpdateUserRequest
     ): WebResponse<UserResponse> {
-        val userResponse = userService.update(id, updateUserRequest)
+        val userResponse = userService.update(username, updateUserRequest)
         return WebResponse(
             code = 200,
             status = "Data Updated",
@@ -50,18 +50,6 @@ class UserController(val userService: UserService) {
         )
     }
 
-    @DeleteMapping(
-        value = ["user/{id}"],
-        produces = ["application/json"]
-    )
-    fun deleteUser(@PathVariable id: String): WebResponse<String> {
-        userService.delete(id)
-        return WebResponse(
-            code = 200,
-            status = "Data Deleted",
-            data = id
-        )
-    }
 
     @GetMapping(
         value = ["user"],

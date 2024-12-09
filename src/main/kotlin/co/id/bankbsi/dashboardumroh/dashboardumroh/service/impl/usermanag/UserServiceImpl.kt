@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
+package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
@@ -11,7 +11,6 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.UserService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -27,25 +26,26 @@ class UserServiceImpl(
 
     override fun create(createUserRequest: CreateUserRequest): UserResponse {
         validationUtill.validate(createUserRequest)
-        val role = roleRepository.findById(createUserRequest.id_role).orElseThrow { NotFoundException() }
-
+        val role = roleRepository.findById(createUserRequest.idRole).orElseThrow { NotFoundException() }
         val user = User(
-            idUser = createUserRequest.id_user,
             nama = createUserRequest.nama,
             unit = createUserRequest.unit,
             idRole = role,
             status = createUserRequest.status,
             createdAt = Date(),
             lastLogin = Date(),
-            userLdap = createUserRequest.user_ldap,
+            userLdap = createUserRequest.userLdap,
             passwordLdap = encoder.encode(createUserRequest.password)
         )
+        if (userRepository.existsById(user.idUser)) {
+            throw Exception("User already exist")
+        }
         userRepository.save(user)
         return convertUserToUserResponse(user)
     }
 
-    override fun get(id: String): UserResponse {
-        val user = findUserByIdOrThrowNotFound(id)
+    override fun get(username: String): UserResponse {
+        val user = findUserByUserNameOrThrowNotFound(username)
         return convertUserToUserResponse(user)
     }
 
@@ -55,13 +55,8 @@ class UserServiceImpl(
         return user.map { convertUserToUserResponse(it) }
     }
 
-    override fun delete(id: String) {
-        val user = findUserByIdOrThrowNotFound(id)
-        userRepository.delete(user)
-    }
-
-    override fun update(id: String, updateUserRequest: UpdateUserRequest): UserResponse {
-        val user = findUserByIdOrThrowNotFound(id)
+    override fun update(username: String, updateUserRequest: UpdateUserRequest): UserResponse {
+        val user = findUserByUserNameOrThrowNotFound(username)
         validationUtill.validate(updateUserRequest)
         user.apply {
             nama = updateUserRequest.nama
@@ -84,8 +79,8 @@ class UserServiceImpl(
     }
 
 
-    private fun findUserByIdOrThrowNotFound(id: String): User {
-        val user = userRepository.findByIdOrNull(id)
+    private fun findUserByUserNameOrThrowNotFound(username: String): User {
+        val user = userRepository.findByUserLdap(username)
         if (user == null) {
             throw NotFoundException()
         } else {
@@ -104,6 +99,8 @@ class UserServiceImpl(
             createdAt = user.createdAt,
             lastLogin = user.lastLogin,
 
-        )
+            )
     }
+
+
 }

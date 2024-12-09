@@ -29,11 +29,11 @@ class MenuController(val menuService: MenuService) {
     }
 
     @GetMapping(
-        value = ["menu/{id}"],
+        value = ["menu/{namaMenu}"],
         produces = ["application/json"]
     )
-    fun get(@PathVariable id: String): WebResponse<MenuResponse> {
-        val menuResponse = menuService.get(id)
+    fun get(@PathVariable namaMenu: String): WebResponse<MenuResponse> {
+        val menuResponse = menuService.get(namaMenu)
         return WebResponse(
             code = 200,
             status = "OK",
@@ -42,31 +42,18 @@ class MenuController(val menuService: MenuService) {
     }
 
     @PutMapping(
-        value = ["menu/{id}"],
+        value = ["menu/{namaMenu}"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
     fun updateMenu(
-        @PathVariable id: String,
+        @PathVariable namaMenu: String,
         @RequestBody updateMenuRequest: UpdateMenuRequest
     ): WebResponse<MenuResponse> {
-        val menuResponse = menuService.update(id, updateMenuRequest)
+        val menuResponse = menuService.update(namaMenu, updateMenuRequest)
         return WebResponse(
             code = 200,
             status = "Data Updated",
-            data = menuResponse
-        )
-    }
-
-    @DeleteMapping(
-        value = ["menu/{id}"],
-        produces = ["application/json"]
-    )
-    fun deleteMenu(@PathVariable id: String): WebResponse<MenuResponse> {
-        val menuResponse = menuService.delete(id)
-        return WebResponse(
-            code = 200,
-            status = "Data Deleted",
             data = menuResponse
         )
     }

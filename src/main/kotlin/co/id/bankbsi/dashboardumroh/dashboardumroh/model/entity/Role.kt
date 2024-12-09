@@ -6,8 +6,9 @@ import jakarta.persistence.*
 @Table(name = "table_role")
 data class Role(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_role")
-    val idRole:String,
+    val idRole:Int = 0,
 
     @Column(name = "nama_role")
     var namaRole:String,

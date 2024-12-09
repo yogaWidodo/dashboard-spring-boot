@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
+package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Auditrail
@@ -6,6 +6,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.Creat
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.ListAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.UpdateAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuditrailResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.AuditrailRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.AuditrailService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
@@ -24,12 +25,20 @@ class AuditrailServiceImpl(
     override fun create(auditrailRequest: CreateAuditrailRequest): AuditrailResponse {
         validationUtill.validate(auditrailRequest)
         val auditrail = Auditrail(
-            auditrail = auditrailRequest.idAuditrail,
             createAt = Date(),
             typeData = auditrailRequest.typeData,
             dataAfter = auditrailRequest.dataAfter,
             dataBefore = auditrailRequest.dataBefore
         )
+        if (auditrailRepository.existsById(auditrail.auditrail)) {
+            throw Exception().apply {
+                WebResponse(
+                    code = 400,
+                    status = "BAD REQUEST",
+                    data = "Auditrail already exist",
+                )
+            }
+        }
         auditrailRepository.save(auditrail)
         return convertAudiTrailToAuditrailResponse(auditrail)
 
@@ -41,7 +50,7 @@ class AuditrailServiceImpl(
         return auditrail.map { convertAudiTrailToAuditrailResponse(it) }
     }
 
-    override fun update(id: String, auditrailRequest: UpdateAuditrailRequest): AuditrailResponse {
+    override fun update(id: Int, auditrailRequest: UpdateAuditrailRequest): AuditrailResponse {
         val auditrail = findAuditrailByIdOrThrowNotFound(id)
         validationUtill.validate(auditrailRequest)
         auditrail.apply {
@@ -53,13 +62,13 @@ class AuditrailServiceImpl(
         return convertAudiTrailToAuditrailResponse(auditrail)
     }
 
-    override fun delete(id: String): AuditrailResponse {
+    override fun delete(id: Int): AuditrailResponse {
         val auditrail = findAuditrailByIdOrThrowNotFound(id)
         auditrailRepository.delete(auditrail)
         return convertAudiTrailToAuditrailResponse(auditrail)
     }
 
-    override fun get(id: String): AuditrailResponse {
+    override fun get(id: Int): AuditrailResponse {
         val auditrail = findAuditrailByIdOrThrowNotFound(id)
         return convertAudiTrailToAuditrailResponse(auditrail)
     }
@@ -74,7 +83,7 @@ class AuditrailServiceImpl(
         )
     }
 
-    private fun findAuditrailByIdOrThrowNotFound(id: String): Auditrail {
+    private fun findAuditrailByIdOrThrowNotFound(id: Int): Auditrail {
         val auditrail = auditrailRepository.findByIdOrNull(id)
         if (auditrail == null) {
             throw NotFoundException()

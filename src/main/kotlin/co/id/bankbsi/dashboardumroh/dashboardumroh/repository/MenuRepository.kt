@@ -3,5 +3,6 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.repository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Menu
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface MenuRepository:JpaRepository<Menu,String> {
+interface MenuRepository:JpaRepository<Menu,Int> {
+    fun findByNamaMenu(namaMenu: String): Menu?
 }

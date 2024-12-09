@@ -5,7 +5,7 @@ spring:
   datasource:
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:postgres}
-    url: ${DATABASE_URL:jdbc:postgresql://host.docker.internal:5432/dashboard-umroh}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/dashboard-umroh}
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,5 +18,5 @@ server:
 
 jwt:
   key: ${JWT_KEY}
-  access-token-expiration: 3600000 # in milliseconds (1 hour)
+  access-token-expiration: 32400000 # in milliseconds 9  hour)
   refresh-token-expiration: 604800000 # in milliseconds (1 week)

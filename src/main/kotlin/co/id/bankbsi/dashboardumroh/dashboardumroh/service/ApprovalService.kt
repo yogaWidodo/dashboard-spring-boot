@@ -8,7 +8,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.ApprovalRespon
 interface ApprovalService {
     fun create(createApprovalRequest: CreateApprovalRequest):ApprovalResponse
     fun listApproval(listApprovalRequest: ListApprovalRequest):List<ApprovalResponse>
-    fun update(id:String, updateApprovalRequest: UpdateApprovalRequest):ApprovalResponse
-    fun delete(id:String):ApprovalResponse
-    fun get(id:String):ApprovalResponse
+    fun update(id:Int, updateApprovalRequest: UpdateApprovalRequest):ApprovalResponse
+    fun delete(id:Int):ApprovalResponse
+    fun get(id:Int):ApprovalResponse
 }

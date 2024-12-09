@@ -4,7 +4,7 @@ import java.util.*
 
 data class ApprovalResponse (
 
-    val idApproval: String,
+    val idApproval: Int,
 
     val maker:String,
 

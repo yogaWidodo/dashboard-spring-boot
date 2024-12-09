@@ -34,7 +34,7 @@ class SecurityConfiguration(
                     .permitAll()
                     .requestMatchers(HttpMethod.POST,"/api/user")
                     .hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET,"/api/user")
+                    .requestMatchers(HttpMethod.GET,"/api/**")
                     .hasRole("ADMIN")
                     .anyRequest()
                     .fullyAuthenticated()

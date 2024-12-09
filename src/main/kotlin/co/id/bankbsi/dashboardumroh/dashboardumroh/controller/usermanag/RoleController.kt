@@ -28,13 +28,9 @@ class RoleController(val roleService: RoleService) {
         )
     }
 
-    @GetMapping(
-        value = ["role/{id}"],
-        produces = ["application/json"],
-        headers = ["X-Api-Key=secret"]
-    )
-    fun get(@PathVariable id:String):WebResponse<RoleResponse>{
-        val roleResponse = roleService.get(id)
+    @GetMapping("role/{namaRole}")
+    fun get(@PathVariable namaRole:String):WebResponse<RoleResponse>{
+        val roleResponse = roleService.get(namaRole)
         return WebResponse(
             code = 200,
             status = "OK",
@@ -47,40 +43,27 @@ class RoleController(val roleService: RoleService) {
         consumes = ["application/json"]
     )
     fun updateRole(
-        @PathVariable id: String,
+        @PathVariable namaRole: String,
         @RequestBody updateRoleRequest:UpdateRoleRequest
     ): WebResponse<RoleResponse> {
-        val roleResponse = roleService.update(id, updateRoleRequest)
+        val roleResponse = roleService.update(namaRole, updateRoleRequest)
         return WebResponse(
             code = 200,
             status = "Data Updated",
             data = roleResponse
-        )
-    }
-
-    @DeleteMapping(
-        value = ["role/{id}"],
-        produces = ["application/json"]
-    )
-    fun deleteRole(@PathVariable id: String): WebResponse<String> {
-        roleService.delete(id)
-        return WebResponse(
-            code = 200,
-            status = "Data Deleted",
-            data = id
         )
     }
 
     @PutMapping(
-        value = ["role/{id}/menu"],
+        value = ["role/{namaRole}/menu"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
     fun updateRoleMenu(
-        @PathVariable id: String,
+        @PathVariable namaRole: String,
         @RequestBody updateRoleMenuRequest: UpdateRoleMenuRequest
     ): WebResponse<RoleResponse> {
-        val roleResponse = roleService.updateMenus(id, updateRoleMenuRequest)
+        val roleResponse = roleService.updateMenus(namaRole, updateRoleMenuRequest)
         return WebResponse(
             code = 200,
             status = "Data Updated",
@@ -88,10 +71,7 @@ class RoleController(val roleService: RoleService) {
         )
     }
 
-    @GetMapping(
-        value = ["role"],
-        produces = ["application/json"]
-    )
+    @GetMapping("role")
     fun listRole(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int

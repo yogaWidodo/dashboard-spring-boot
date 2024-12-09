@@ -3,8 +3,7 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail
 import jakarta.validation.constraints.NotBlank
 
 data class CreateAuditrailRequest(
-    @field:NotBlank
-    val idAuditrail: String,
+
 
     @field:NotBlank
     val typeData: String,

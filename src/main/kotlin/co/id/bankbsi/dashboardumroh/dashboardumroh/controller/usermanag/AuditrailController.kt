@@ -32,7 +32,7 @@ class AuditrailController(val auditrailService: AuditrailService) {
         value = ["auditrail/{id}"],
         produces = ["application/json"]
     )
-    fun get(@PathVariable id: String): WebResponse<AuditrailResponse> {
+    fun get(@PathVariable id: Int): WebResponse<AuditrailResponse> {
         val auditrailResponse = auditrailService.get(id)
         return WebResponse(
             code = 200,
@@ -45,7 +45,7 @@ class AuditrailController(val auditrailService: AuditrailService) {
         value = ["auditrail/{id}"],
         produces = ["application/json"]
     )
-    fun delete(@PathVariable id: String): WebResponse<AuditrailResponse> {
+    fun delete(@PathVariable id: Int): WebResponse<AuditrailResponse> {
         val auditrailResponse = auditrailService.delete(id)
         return WebResponse(
             code = 200,
@@ -59,7 +59,7 @@ class AuditrailController(val auditrailService: AuditrailService) {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    fun update(@PathVariable id: String, @RequestBody body: UpdateAuditrailRequest): WebResponse<AuditrailResponse> {
+    fun update(@PathVariable id: Int, @RequestBody body: UpdateAuditrailRequest): WebResponse<AuditrailResponse> {
         val auditrailResponse = auditrailService.update(id, body)
         return WebResponse(
             code = 200,

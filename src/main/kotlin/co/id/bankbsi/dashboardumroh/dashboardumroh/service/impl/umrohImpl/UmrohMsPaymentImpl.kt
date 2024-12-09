@@ -2,10 +2,10 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.umrohImpl
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.umroh.UmrohMsPayment
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.paymentrequest.PaymentListRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.paymentrequest.UmrohMsPaymentRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.paymentrequest.UmrohMstPaymentRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.umroh.UmrohMsPaymentResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.umroh.UmrohMsPaymentRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohMsPaymentService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohMstPaymentService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -16,8 +16,8 @@ import java.util.stream.Collectors
 class UmrohMsPaymentImpl(
     private val umrohMsPaymentRepository: UmrohMsPaymentRepository,
     private val validationUtill: ValidationUtill
-) : UmrohMsPaymentService {
-    override fun create(umrohMsPaymentRequest: UmrohMsPaymentRequest): UmrohMsPaymentResponse {
+) : UmrohMstPaymentService {
+    override fun create(umrohMsPaymentRequest: UmrohMstPaymentRequest): UmrohMsPaymentResponse {
         validationUtill.validate(umrohMsPaymentRequest)
         val umrohMsPayment = UmrohMsPayment(
             idMaster = umrohMsPaymentRequest.idMaster,

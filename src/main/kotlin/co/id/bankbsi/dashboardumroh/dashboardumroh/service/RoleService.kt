@@ -9,12 +9,11 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRole
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.RoleResponse
 
 
-interface RoleService {
+interface  RoleService {
     fun create(createroleRequest: CreateRoleRequest):RoleResponse
     fun list(listRoleRequest: ListRoleRequest):List<RoleResponse>
-    fun update(id:String, updateRoleRequest: UpdateRoleRequest):RoleResponse
-    fun updateMenus(id:String, updateRoleMenuRequest: UpdateRoleMenuRequest):RoleResponse
-    fun delete(id:String)
-    fun get(id:String):RoleResponse
+    fun update(namaRole:String, updateRoleRequest: UpdateRoleRequest):RoleResponse
+    fun updateMenus(namaRole:String, updateRoleMenuRequest: UpdateRoleMenuRequest):RoleResponse
+    fun get(namaRole:String):RoleResponse
 
 }

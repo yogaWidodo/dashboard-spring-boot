@@ -2,7 +2,7 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.paymentr
 
 import java.util.*
 
-data class UmrohMsPaymentRequest(
+data class UmrohMstPaymentRequest(
 
 
     val idMaster: String,

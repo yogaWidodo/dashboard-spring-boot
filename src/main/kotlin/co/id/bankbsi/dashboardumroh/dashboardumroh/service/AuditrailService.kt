@@ -8,7 +8,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuditrailRespo
 interface AuditrailService {
     fun create(auditrailRequest: CreateAuditrailRequest):AuditrailResponse
     fun listAuditrail(listAuditrailRequest: ListAuditrailRequest):List<AuditrailResponse>
-    fun update(id:String, auditrailRequest: UpdateAuditrailRequest):AuditrailResponse
-    fun delete(id:String):AuditrailResponse
-    fun get(id:String):AuditrailResponse
+    fun update(id:Int, auditrailRequest: UpdateAuditrailRequest):AuditrailResponse
+    fun delete(id:Int):AuditrailResponse
+    fun get(id:Int):AuditrailResponse
 }

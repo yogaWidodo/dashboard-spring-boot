@@ -4,7 +4,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auth.Authentica
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auth.RefreshTokenRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuthenticationResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.TokenResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.security.AuthenticationService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.AuthenticationService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException

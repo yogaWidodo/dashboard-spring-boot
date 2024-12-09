@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
+package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Approval
@@ -23,7 +23,6 @@ class ApprovalServiceImpl(
     override fun create(createApprovalRequest: CreateApprovalRequest): ApprovalResponse {
         validationUtill.validate(createApprovalRequest)
         val approval = Approval(
-            idApproval = createApprovalRequest.idApproval,
             maker = createApprovalRequest.maker,
             approver = createApprovalRequest.approver,
             status = createApprovalRequest.status,
@@ -45,7 +44,7 @@ class ApprovalServiceImpl(
         return approval.map { convertApprovaltoApprovalResponse(it) }
     }
 
-    override fun update(id: String, updateApprovalRequest: UpdateApprovalRequest): ApprovalResponse {
+    override fun update(id: Int, updateApprovalRequest: UpdateApprovalRequest): ApprovalResponse {
         val approval = findApprovalByIdOrThrowNotFound(id)
         validationUtill.validate(updateApprovalRequest)
         approval.apply {
@@ -62,13 +61,13 @@ class ApprovalServiceImpl(
         return convertApprovaltoApprovalResponse(approval)
     }
 
-    override fun delete(id: String): ApprovalResponse {
+    override fun delete(id: Int): ApprovalResponse {
         val approval = findApprovalByIdOrThrowNotFound(id)
         approvalRepository.delete(approval)
         return convertApprovaltoApprovalResponse(approval)
     }
 
-    override fun get(id: String): ApprovalResponse {
+    override fun get(id: Int): ApprovalResponse {
         val approval = findApprovalByIdOrThrowNotFound(id)
         return convertApprovaltoApprovalResponse(approval)
     }
@@ -89,7 +88,7 @@ class ApprovalServiceImpl(
         )
     }
 
-    private fun findApprovalByIdOrThrowNotFound(id: String): Approval {
+    private fun findApprovalByIdOrThrowNotFound(id: Int): Approval {
         val approval = approvalRepository.findByIdOrNull(id)
         if (approval == null) {
             throw NotFoundException()

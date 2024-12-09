@@ -1,8 +1,9 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.model.response
 
 
+
 data class RoleResponse(
-    val idRole:String,
+    val idRole:Int,
 
     val namaRole:String,
 

@@ -31,7 +31,7 @@ class ApprovalController(val service: ApprovalService) {
         value = ["approval/{id}"],
         produces = ["application/json"],
     )
-    fun getApproval(@PathVariable id: String): WebResponse<ApprovalResponse> {
+    fun getApproval(@PathVariable id: Int): WebResponse<ApprovalResponse> {
         val approvalResponse = service.get(id)
         return WebResponse(
             code = 200,
@@ -46,7 +46,7 @@ class ApprovalController(val service: ApprovalService) {
         consumes = ["application/json"]
     )
     fun update(
-        @PathVariable id: String,
+        @PathVariable id: Int,
         @RequestBody updateApprovalRequest: UpdateApprovalRequest
     ): WebResponse<ApprovalResponse> {
         val approval = service.update(id, updateApprovalRequest)
@@ -61,12 +61,12 @@ class ApprovalController(val service: ApprovalService) {
         value = ["approval/{id}"],
         produces = ["application/json"],
     )
-    fun delete(@PathVariable id: String): WebResponse<String> {
+    fun delete(@PathVariable id: Int): WebResponse<String> {
         val approval = service.delete(id)
         return WebResponse(
             code = 200,
             status = "deleted",
-            data = "data with id $id has been deleted"
+            data = "data $approval has been deleted"
         )
     }
 

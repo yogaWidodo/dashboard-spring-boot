@@ -9,8 +9,9 @@ import java.util.Date
 data class Auditrail(
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_auditrail")
-    val auditrail:String,
+    val auditrail:Int = 0,
 
     @Column(name = "create_at")
     var createAt:Date,
@@ -23,6 +24,4 @@ data class Auditrail(
 
     @Column(name = "data_after")
     var dataAfter:String,
-
-
 )

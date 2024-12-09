@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotBlank
 
 data class CreateApprovalRequest(
 
-    @field:NotBlank
-    val idApproval: String,
 
     @field:NotBlank
     val maker:String,
