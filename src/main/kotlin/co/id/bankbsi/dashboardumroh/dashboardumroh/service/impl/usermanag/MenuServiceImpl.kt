@@ -1,17 +1,19 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Menu
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.CreateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.ListMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.UpdateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.MenuService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.util.stream.Collectors
 
 @Service
@@ -22,27 +24,18 @@ class MenuServiceImpl(
 
     override fun create(createMenuRequest: CreateMenuRequest): MenuResponse {
         validationUtill.validate(createMenuRequest)
+        isMenuExist(createMenuRequest.namaMenu)
         val menu = Menu(
             status = createMenuRequest.status,
             namaMenu = createMenuRequest.namaMenu,
         )
-
-        if (menuRepository.existsById(menu.idMenu)) {
-            throw Exception().apply {
-                WebResponse(
-                    code = 400,
-                    status = "BAD REQUEST",
-                    data = "Menu already exist",
-                )
-            }
-        }
         menuRepository.save(menu)
-        return convertMenuToMenuResponse(menu)
+        return menu.mapToMenuResponse()
     }
 
     override fun get(namaMenu: String): MenuResponse {
         val menu = findMenuByNamaOrThrowNotFound(namaMenu)
-        return convertMenuToMenuResponse(menu)
+        return menu.mapToMenuResponse()
     }
 
     override fun update(namaMenu: String, updateMenuRequest: UpdateMenuRequest): MenuResponse {
@@ -53,13 +46,13 @@ class MenuServiceImpl(
             status = updateMenuRequest.status
         }
         menuRepository.save(menu)
-        return convertMenuToMenuResponse(menu)
+        return menu.mapToMenuResponse()
     }
 
     override fun list(listMenuRequest: ListMenuRequest): List<MenuResponse> {
         val page = menuRepository.findAll(PageRequest.of(listMenuRequest.page, listMenuRequest.size))
         val menu = page.get().collect(Collectors.toList())
-        return menu.map { convertMenuToMenuResponse(it) }
+        return menu.map { it.mapToMenuResponse() }
     }
 
     private fun findMenuByNamaOrThrowNotFound(namaMenu: String): Menu {
@@ -72,11 +65,16 @@ class MenuServiceImpl(
     }
 
 
-    private fun convertMenuToMenuResponse(menu: Menu): MenuResponse {
+    private fun isMenuExist(namaMenu: String) {
+        if (menuRepository.existsByNamaMenu(namaMenu)) {
+            throw DataAlreadyAssignedException()
+        }
+    }
+    private fun Menu.mapToMenuResponse(): MenuResponse {
         return MenuResponse(
-            idMenu = menu.idMenu,
-            status = menu.status,
-            namaMenu = menu.namaMenu,
+            idMenu = idMenu,
+            status = status,
+            namaMenu = namaMenu,
         )
     }
 }

@@ -9,6 +9,5 @@ interface ApprovalService {
     fun create(createApprovalRequest: CreateApprovalRequest):ApprovalResponse
     fun listApproval(listApprovalRequest: ListApprovalRequest):List<ApprovalResponse>
     fun update(id:Int, updateApprovalRequest: UpdateApprovalRequest):ApprovalResponse
-    fun delete(id:Int):ApprovalResponse
     fun get(id:Int):ApprovalResponse
 }

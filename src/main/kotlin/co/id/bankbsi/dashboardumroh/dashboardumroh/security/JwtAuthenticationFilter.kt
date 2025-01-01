@@ -3,6 +3,8 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.TokenService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.CustomUserDetailService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.TokenServiceImpl
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.MalformedJwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
@@ -30,16 +32,24 @@ class JwtAuthenticationFilter(
             return
         }
         val jwtToken = authHeader!!.extractTokenValue()
-        val email = tokenService.extractEmail(jwtToken)
-        if (email != null && SecurityContextHolder.getContext().authentication == null) {
-            val foundUser = userDetailService.loadUserByUsername(email)
-
-            if (tokenService.isValid(jwtToken, foundUser)) {
-                updateContext(foundUser,request)
+        try {
+            val email = tokenService.extractEmail(jwtToken)
+            if (email != null && SecurityContextHolder.getContext().authentication == null) {
+                val foundUser = userDetailService.loadUserByUsername(email)
+                if (tokenService.isValid(jwtToken, foundUser)) {
+                    updateContext(foundUser,request)
+                }
+                filterChain.doFilter(request, response)
             }
-//            setTokenCookie(response, jwtToken)
-            filterChain.doFilter(request, response)
+        }catch (e: ExpiredJwtException){
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
+            response.writer.write("${e.message}")
+        }catch (e: MalformedJwtException) {
+            response.status = HttpServletResponse.SC_BAD_REQUEST
+            response.writer.write("Invalid JWT token")
         }
+
+
     }
 
     private fun updateContext(foundUser:UserDetails,request: HttpServletRequest){
@@ -58,12 +68,5 @@ class JwtAuthenticationFilter(
     private fun String.extractTokenValue(): String =
         this.substringAfter("Bearer ")
 
-//
-//    private fun setTokenCookie(response: HttpServletResponse, token: String) {
-//        val cookie = Cookie("token", token)
-//        cookie.isHttpOnly = true
-//        cookie.path = "/"
-//        cookie.maxAge = 3600 // 1 hour
-//        response.addCookie(cookie)
-//    }
+
 }

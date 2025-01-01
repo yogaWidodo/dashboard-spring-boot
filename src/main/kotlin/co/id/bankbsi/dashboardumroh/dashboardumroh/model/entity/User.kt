@@ -15,7 +15,7 @@ data class User(
     @Column(name = "id_user")
     val idUser: Int = 0,
 
-    @Column(name = "user_ldap")
+    @Column(name = "user_ldap", unique = true)
     val userLdap: String,
 
     @Column(name = "nama")

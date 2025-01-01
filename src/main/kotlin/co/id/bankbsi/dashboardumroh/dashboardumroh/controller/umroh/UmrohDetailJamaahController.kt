@@ -5,6 +5,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.detailjam
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.umroh.UmrohDetailJamaahResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohDetailJamaahService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -15,6 +16,7 @@ class UmrohDetailJamaahController(
 ) {
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     fun create(@RequestBody body: UmrohDetailJamaahRequest): WebResponse<UmrohDetailJamaahResponse> {
         val response = service.create(body)
         return WebResponse(
@@ -25,6 +27,7 @@ class UmrohDetailJamaahController(
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     fun get(@PathVariable id: String): WebResponse<UmrohDetailJamaahResponse> {
         val response = service.get(id)
         return WebResponse(
@@ -34,17 +37,10 @@ class UmrohDetailJamaahController(
         )
     }
 
-    @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: String): WebResponse<String> {
-        service.delete(id)
-        return WebResponse(
-            code = 200,
-            status = "OK",
-            data = "data $id has been deleted"
-        )
-    }
+
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     fun getAll(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int

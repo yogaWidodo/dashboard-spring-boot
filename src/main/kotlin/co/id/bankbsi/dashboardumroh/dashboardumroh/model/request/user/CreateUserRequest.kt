@@ -14,7 +14,6 @@ data class CreateUserRequest(
     @field:NotBlank
     val unit:String,
 
-
     val idRole:Int,
 
     @field:NotBlank

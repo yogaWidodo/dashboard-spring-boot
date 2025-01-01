@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface MenuRepository:JpaRepository<Menu,Int> {
     fun findByNamaMenu(namaMenu: String): Menu?
+    fun existsByNamaMenu(namaMenu: String): Boolean
 }

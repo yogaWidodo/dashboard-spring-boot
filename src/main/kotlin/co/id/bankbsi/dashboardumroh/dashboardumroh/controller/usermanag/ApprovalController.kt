@@ -6,6 +6,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.Update
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.ApprovalResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.ApprovalService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -18,6 +19,7 @@ class ApprovalController(val service: ApprovalService) {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
+    @PreAuthorize("hasRole('ADMIN')")
     fun createApproval(@RequestBody createApprovalRequest: CreateApprovalRequest): WebResponse<ApprovalResponse> {
         val approvalResponse = service.create(createApprovalRequest)
         return WebResponse(
@@ -31,6 +33,7 @@ class ApprovalController(val service: ApprovalService) {
         value = ["approval/{id}"],
         produces = ["application/json"],
     )
+    @PreAuthorize("hasRole('ADMIN')")
     fun getApproval(@PathVariable id: Int): WebResponse<ApprovalResponse> {
         val approvalResponse = service.get(id)
         return WebResponse(
@@ -45,6 +48,7 @@ class ApprovalController(val service: ApprovalService) {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
+    @PreAuthorize("hasRole('ADMIN')")
     fun update(
         @PathVariable id: Int,
         @RequestBody updateApprovalRequest: UpdateApprovalRequest
@@ -57,19 +61,7 @@ class ApprovalController(val service: ApprovalService) {
         )
     }
 
-    @DeleteMapping(
-        value = ["approval/{id}"],
-        produces = ["application/json"],
-    )
-    fun delete(@PathVariable id: Int): WebResponse<String> {
-        val approval = service.delete(id)
-        return WebResponse(
-            code = 200,
-            status = "deleted",
-            data = "data $approval has been deleted"
-        )
-    }
-
+    @PreAuthorize("hasRole('SPV')or hasRole('ADMIN')")
     @GetMapping(
         value = ["approval"],
         produces = ["application/json"],

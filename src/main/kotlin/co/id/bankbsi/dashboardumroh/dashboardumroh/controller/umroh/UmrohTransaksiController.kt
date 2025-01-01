@@ -6,6 +6,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.transaksi
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.umroh.UmrohTransaksiResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohTransaksiService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 
@@ -16,6 +17,7 @@ class UmrohTransaksiController(
 ) {
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     fun create(@RequestBody body: UmrohTransaksiRequest): WebResponse<UmrohTransaksiResponse> {
         val response = umrohTransaksiService.create(body)
         return WebResponse(
@@ -26,6 +28,7 @@ class UmrohTransaksiController(
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('REPORTING') or hasRole('SPV') or hasRole('ADMIN')")
     fun get(@PathVariable id: String): WebResponse<UmrohTransaksiResponse> {
         val response = umrohTransaksiService.get(id)
         return WebResponse(
@@ -36,6 +39,7 @@ class UmrohTransaksiController(
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     fun update(
         @PathVariable id: String,
         @RequestBody update: UmrohTransaksiUpdate
@@ -48,21 +52,13 @@ class UmrohTransaksiController(
         )
     }
 
-    @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: String): WebResponse<String> {
-        umrohTransaksiService.delete(id)
-        return WebResponse(
-            code = 200,
-            status = "OK",
-            data = "data $id has been deleted"
-        )
-    }
 
     @GetMapping
+    @PreAuthorize("hasRole('REPORTING') or hasRole('SPV') or hasRole('ADMIN')")
     fun list(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int
-    ): WebResponse<List<UmrohTransaksiResponse>>{
+    ): WebResponse<List<UmrohTransaksiResponse>> {
         val request = TransaksiListRequest(page, size)
         val response = umrohTransaksiService.list(request)
         return WebResponse(

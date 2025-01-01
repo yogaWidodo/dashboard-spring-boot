@@ -13,7 +13,12 @@ data class Role(
     @Column(name = "nama_role")
     var namaRole:String,
 
-    @OneToMany(targetEntity = Menu::class)
-    var menus:MutableList<Menu> = mutableListOf()
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "table_role_menu",
+        joinColumns = [JoinColumn(name = "id_role")],
+        inverseJoinColumns = [JoinColumn(name = "id_menu")]
+    )
+    var menus:List<Menu> = listOf()
 
 )

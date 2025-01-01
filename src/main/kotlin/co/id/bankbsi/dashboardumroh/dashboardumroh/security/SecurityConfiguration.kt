@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.Customizer
 import org.springframework.security.authentication.AuthenticationProvider
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -17,6 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(
     private val authenticationProvider: AuthenticationProvider
 ) {
@@ -30,14 +32,11 @@ class SecurityConfiguration(
             .csrf{ it.disable() }
             .authorizeHttpRequests{
                 it
-                    .requestMatchers("/api/auth","/api/auth/refresh","/error")
+                    .requestMatchers(HttpMethod.POST,"/api/auth","/api/auth/refresh","/api/error")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST,"/api/user")
-                    .hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET,"/api/**")
-                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET,"/api/**").hasAnyRole("ADMIN","OFFICER","REPORTING","SPV" )
                     .anyRequest()
-                    .fullyAuthenticated()
+                    .authenticated()
             }
             .sessionManagement{
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

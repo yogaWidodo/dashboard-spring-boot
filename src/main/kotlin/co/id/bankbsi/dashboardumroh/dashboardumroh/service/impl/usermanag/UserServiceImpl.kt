@@ -1,5 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.CreateUserRequest
@@ -26,7 +27,8 @@ class UserServiceImpl(
 
     override fun create(createUserRequest: CreateUserRequest): UserResponse {
         validationUtill.validate(createUserRequest)
-        val role = roleRepository.findById(createUserRequest.idRole).orElseThrow { NotFoundException() }
+        val role = roleRepository.findById(createUserRequest.idRole).orElseThrow()
+        isUserExist(createUserRequest.userLdap)
         val user = User(
             nama = createUserRequest.nama,
             unit = createUserRequest.unit,
@@ -37,50 +39,48 @@ class UserServiceImpl(
             userLdap = createUserRequest.userLdap,
             passwordLdap = encoder.encode(createUserRequest.password)
         )
-        if (userRepository.existsById(user.idUser)) {
-            throw Exception("User already exist")
-        }
         userRepository.save(user)
-        return convertUserToUserResponse(user)
+        return user.mapToUserResponse()
     }
 
-    override fun get(username: String): UserResponse {
-        val user = findUserByUserNameOrThrowNotFound(username)
-        return convertUserToUserResponse(user)
+    override fun get(userLdap: String): UserResponse {
+        val user = findUserByUserNameOrThrowNotFound(userLdap)
+        return user.mapToUserResponse()
     }
 
     override fun list(listUserRequest: ListUserRequest): List<UserResponse> {
         val page = userRepository.findAll(PageRequest.of(listUserRequest.page, listUserRequest.size))
         val user = page.get().collect(Collectors.toList())
-        return user.map { convertUserToUserResponse(it) }
+        return user.map { it.mapToUserResponse() }
     }
 
-    override fun update(username: String, updateUserRequest: UpdateUserRequest): UserResponse {
-        val user = findUserByUserNameOrThrowNotFound(username)
+    override fun update(userLdap: String, updateUserRequest: UpdateUserRequest): UserResponse {
+        val user = findUserByUserNameOrThrowNotFound(userLdap)
         validationUtill.validate(updateUserRequest)
         user.apply {
             nama = updateUserRequest.nama
             unit = updateUserRequest.unit
             status = updateUserRequest.status
+
         }
         userRepository.save(user)
-        return convertUserToUserResponse(user)
+        return user.mapToUserResponse()
     }
 
-    override fun updateLastLogin(username: String, lastLogin: Date): UserResponse {
-        val user = userRepository.findByUserLdap(username)
+    override fun updateLastLogin(userLdap: String, lastLogin: Date): UserResponse {
+        val user = userRepository.findByUserLdap(userLdap)
         if (user != null) {
             user.lastLogin = lastLogin
             userRepository.save(user)
-            return convertUserToUserResponse(user)
+            return user.mapToUserResponse()
         } else {
             throw NotFoundException()
         }
     }
 
 
-    private fun findUserByUserNameOrThrowNotFound(username: String): User {
-        val user = userRepository.findByUserLdap(username)
+    private fun findUserByUserNameOrThrowNotFound(userLdap: String): User {
+        val user = userRepository.findByUserLdap(userLdap)
         if (user == null) {
             throw NotFoundException()
         } else {
@@ -88,18 +88,24 @@ class UserServiceImpl(
         }
     }
 
-    private fun convertUserToUserResponse(user: User): UserResponse {
-        return UserResponse(
-            idUser = user.idUser,
-            userLdap = user.userLdap,
-            nama = user.nama,
-            unit = user.unit,
-            role = user.idRole,
-            status = user.status,
-            createdAt = user.createdAt,
-            lastLogin = user.lastLogin,
+    private fun isUserExist(userLdap: String): Boolean {
+        if (userRepository.findByUserLdap(userLdap) != null) {
+            throw DataAlreadyAssignedException()
+        }
+        return false
+    }
 
-            )
+    private fun User.mapToUserResponse(): UserResponse {
+        return UserResponse(
+            idUser = this.idUser,
+            userLdap = this.userLdap,
+            nama = this.nama,
+            unit = this.unit,
+            role = this.idRole,
+            status = this.status,
+            createdAt = this.createdAt,
+            lastLogin = this.lastLogin,
+        )
     }
 
 

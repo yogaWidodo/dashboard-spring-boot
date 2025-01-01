@@ -6,6 +6,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.UpdateMenu
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.MenuService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -18,13 +19,13 @@ class MenuController(val menuService: MenuService) {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-
+    @PreAuthorize("hasRole('ADMIN')")
     fun createMenu(@RequestBody body: CreateMenuRequest): WebResponse<MenuResponse> {
-        val menuResponse = menuService.create(body)
+        val result = menuService.create(body)
         return WebResponse(
             code = 200,
             status = "OK",
-            data = menuResponse
+            data = result
         )
     }
 
@@ -32,6 +33,7 @@ class MenuController(val menuService: MenuService) {
         value = ["menu/{namaMenu}"],
         produces = ["application/json"]
     )
+    @PreAuthorize("hasRole('ADMIN')")
     fun get(@PathVariable namaMenu: String): WebResponse<MenuResponse> {
         val menuResponse = menuService.get(namaMenu)
         return WebResponse(
@@ -46,6 +48,7 @@ class MenuController(val menuService: MenuService) {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
+    @PreAuthorize("hasRole('ADMIN')")
     fun updateMenu(
         @PathVariable namaMenu: String,
         @RequestBody updateMenuRequest: UpdateMenuRequest
@@ -62,6 +65,7 @@ class MenuController(val menuService: MenuService) {
         value = ["menu"],
         produces = ["application/json"]
     )
+    @PreAuthorize("hasRole('ADMIN')")
     fun listMenu(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int

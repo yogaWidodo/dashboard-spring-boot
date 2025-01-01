@@ -1,19 +1,20 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Role
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.CreateRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.ListRoleRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleMenuRequest
+//import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.RoleResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.RoleService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
@@ -23,67 +24,60 @@ class RoleServiceImpl(
     val menuRepository: MenuRepository,
     val validationUtill: ValidationUtill,
 ) : RoleService {
-    override fun create(createroleRequest: CreateRoleRequest): RoleResponse {
-        validationUtill.validate(createroleRequest)
+    override fun create(createRoleRequest: CreateRoleRequest): RoleResponse {
+        validationUtill.validate(createRoleRequest)
+        isRoleExist(createRoleRequest.namaRole)
         val role = Role(
-            namaRole = createroleRequest.namaRole
+            namaRole = createRoleRequest.namaRole
         )
-        if (roleRepository.existsById(role.idRole)) {
-            throw Exception().apply {
-                WebResponse(
-                    code = 400,
-                    status = "BAD REQUEST",
-                    data = "Role already exist",
-                )
-            }
-        }
-        val menus = menuRepository.findAllById(createroleRequest.idMenu)
-        role.menus = menus
-        return convertRoleToRoleResponse(roleRepository.save(role))
+        val menus = menuRepository.findAllById(createRoleRequest.idMenu)
+        role.menus = role.menus.plus(menus)
+        roleRepository.save(role)
+        return role.mapToRoleResponse()
     }
 
     override fun list(listRoleRequest: ListRoleRequest): List<RoleResponse> {
         val page = roleRepository.findAll(PageRequest.of(listRoleRequest.page, listRoleRequest.size))
-        val user = page.get().collect(Collectors.toList())
-        return user.map { convertRoleToRoleResponse(it) }
+        val role = page.get().collect(Collectors.toList())
+        return role.map { it.mapToRoleResponse() }
     }
 
-    override fun update(namaRole:String, updateRoleRequest: UpdateRoleRequest): RoleResponse {
-        val user = findRoleByNamaRoleOrThrowNotFound(namaRole)
+    override fun update(idRole: Int, updateRoleRequest: UpdateRoleRequest): RoleResponse {
+        val role = findRoleByIdOrThrowNotFound(idRole)
         validationUtill.validate(updateRoleRequest)
-        user.apply {
+        role.apply {
             this.namaRole = updateRoleRequest.namaRole
         }
-        roleRepository.save(user)
-        return convertRoleToRoleResponse(user)
-    }
-
-    override fun updateMenus(namaRole:String, updateRoleMenuRequest: UpdateRoleMenuRequest): RoleResponse {
-        val role = findRoleByNamaRoleOrThrowNotFound(namaRole)
-        validationUtill.validate(updateRoleMenuRequest)
-        role.apply {
-            val oldMenu = menus.find { it.namaMenu == updateRoleMenuRequest.oldMenuNama }
-            val newMenu = menuRepository.findByNamaMenu(updateRoleMenuRequest.newMenuNama)
-                ?: throw NotFoundException()
-            if (oldMenu != null) {
-                menus.remove(oldMenu)
-                menus.add(newMenu)
-            }
-        }
         roleRepository.save(role)
-        return convertRoleToRoleResponse(roleRepository.save(role))
+        return role.mapToRoleResponse()
     }
 
-    override fun get(namaRole:String): RoleResponse {
-        val role = findRoleByNamaRoleOrThrowNotFound(namaRole)
-        return convertRoleToRoleResponse(role)
+//    override fun updateMenus(idRole: Int, updateRoleMenuRequest: UpdateRoleMenuRequest): RoleResponse {
+//        val role = findRoleByIdOrThrowNotFound(idRole)
+//        validationUtill.validate(updateRoleMenuRequest)
+//        role.apply {
+//            val oldMenu = menus.find { it.namaMenu == updateRoleMenuRequest.oldMenuNama }
+//            val newMenu = menuRepository.findByNamaMenu(updateRoleMenuRequest.newMenuNama)
+//                ?: throw NotFoundException()
+//            if (oldMenu != null) {
+//                menus.minus(oldMenu)
+//                menus.plus(newMenu)
+//            }
+//        }
+//        roleRepository.save(role)
+//        return convertRoleToRoleResponse(roleRepository.save(role))
+//    }
+
+    override fun get(idRole: Int): RoleResponse {
+        val role = findRoleByIdOrThrowNotFound(idRole)
+        return role.mapToRoleResponse()
     }
 
-    private fun convertRoleToRoleResponse(role: Role): RoleResponse {
+    private fun Role.mapToRoleResponse(): RoleResponse {
         return RoleResponse(
-            idRole = role.idRole,
-            namaRole = role.namaRole,
-            menus = role.menus.map {
+            idRole = this.idRole,
+            namaRole = this.namaRole,
+            menus = this.menus.map {
                 MenuResponse(
                     idMenu = it.idMenu,
                     namaMenu = it.namaMenu,
@@ -94,13 +88,20 @@ class RoleServiceImpl(
     }
 
 
-    private fun findRoleByNamaRoleOrThrowNotFound(namaRole:String): Role {
-        val role = roleRepository.findByNamaRole(namaRole)
+    private fun findRoleByIdOrThrowNotFound(idRole: Int): Role {
+        val role = roleRepository.findByIdOrNull(idRole)
         if (role == null) {
             throw NotFoundException()
         } else {
             return role
         }
 
+    }
+
+    private fun isRoleExist(userLdap: String): Boolean {
+        if (roleRepository.findByNamaRole(userLdap) != null) {
+            throw DataAlreadyAssignedException()
+        }
+        return false
     }
 }

@@ -34,14 +34,13 @@ class ApprovalServiceImpl(
             remarkApproval = createApprovalRequest.remarkApproval
         )
         approvalRepository.save(approval)
-
-        return convertApprovaltoApprovalResponse(approval)
+        return approval.mapToApprovalResponse()
     }
 
     override fun listApproval(listApprovalRequest: ListApprovalRequest): List<ApprovalResponse> {
         val page = approvalRepository.findAll(PageRequest.of(listApprovalRequest.page, listApprovalRequest.size))
         val approval = page.get().collect(Collectors.toList())
-        return approval.map { convertApprovaltoApprovalResponse(it) }
+        return approval.map { it.mapToApprovalResponse() }
     }
 
     override fun update(id: Int, updateApprovalRequest: UpdateApprovalRequest): ApprovalResponse {
@@ -58,33 +57,28 @@ class ApprovalServiceImpl(
             remarkApproval = updateApprovalRequest.remarkApproval
         }
         approvalRepository.save(approval)
-        return convertApprovaltoApprovalResponse(approval)
+        return approval.mapToApprovalResponse()
     }
 
-    override fun delete(id: Int): ApprovalResponse {
-        val approval = findApprovalByIdOrThrowNotFound(id)
-        approvalRepository.delete(approval)
-        return convertApprovaltoApprovalResponse(approval)
-    }
+
 
     override fun get(id: Int): ApprovalResponse {
         val approval = findApprovalByIdOrThrowNotFound(id)
-        return convertApprovaltoApprovalResponse(approval)
+        return approval.mapToApprovalResponse()
     }
 
-
-    private fun convertApprovaltoApprovalResponse(approval: Approval): ApprovalResponse {
+    private fun Approval.mapToApprovalResponse(): ApprovalResponse {
         return ApprovalResponse(
-            idApproval = approval.idApproval,
-            maker = approval.maker,
-            approver = approval.approver,
-            status = approval.status,
-            typeData = approval.typeData,
-            dataBefore = approval.dataBefore,
-            dataAfter = approval.dataAfter,
-            createAt = approval.createAt,
-            updateAt = approval.updateAt,
-            remarkApproval = approval.remarkApproval
+            idApproval = idApproval,
+            maker = maker,
+            approver = approver,
+            status = status,
+            typeData = typeData,
+            dataBefore = dataBefore,
+            dataAfter = dataAfter,
+            createAt = createAt,
+            updateAt = updateAt,
+            remarkApproval = remarkApproval
         )
     }
 

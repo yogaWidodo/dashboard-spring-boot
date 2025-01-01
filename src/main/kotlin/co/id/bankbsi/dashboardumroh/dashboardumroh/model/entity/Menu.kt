@@ -1,10 +1,11 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "table_menu")
-data class Menu(
+data class  Menu(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_menu")
@@ -16,5 +17,7 @@ data class Menu(
     @Column(name = "status")
     var status: String,
 
-
+    @ManyToMany(mappedBy = "menus", fetch = FetchType.EAGER)
+    @JsonIgnore
+    var roles: List<Role> = listOf()
 )

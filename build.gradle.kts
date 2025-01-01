@@ -33,6 +33,11 @@ dependencies {
 
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	testImplementation("org.springframework.security:spring-security-test")
+	//openapi
+	implementation("org.springdoc:springdoc-openapi-ui:1.8.0")
+	implementation("org.springdoc:springdoc-openapi-data-rest:1.8.0")
+	runtimeOnly("org.springdoc:springdoc-openapi-kotlin:1.8.0")
+
 
 	runtimeOnly("com.oracle.database.jdbc:ojdbc11")
 	runtimeOnly("org.postgresql:postgresql")

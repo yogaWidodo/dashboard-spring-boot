@@ -10,6 +10,8 @@ data class UpdateUserRequest(
     val unit:String,
 
     @field:NotBlank
-    val status:String
+    val status:String,
+
+
 )
 

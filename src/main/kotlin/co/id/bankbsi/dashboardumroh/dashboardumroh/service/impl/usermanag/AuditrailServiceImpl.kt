@@ -1,5 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Auditrail
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.CreateAuditrailRequest
@@ -30,24 +31,16 @@ class AuditrailServiceImpl(
             dataAfter = auditrailRequest.dataAfter,
             dataBefore = auditrailRequest.dataBefore
         )
-        if (auditrailRepository.existsById(auditrail.auditrail)) {
-            throw Exception().apply {
-                WebResponse(
-                    code = 400,
-                    status = "BAD REQUEST",
-                    data = "Auditrail already exist",
-                )
-            }
-        }
+
         auditrailRepository.save(auditrail)
-        return convertAudiTrailToAuditrailResponse(auditrail)
+        return auditrail.mapToAuditrailResponse()
 
     }
 
     override fun listAuditrail(listAuditrailRequest: ListAuditrailRequest): List<AuditrailResponse> {
         val page = auditrailRepository.findAll(PageRequest.of(listAuditrailRequest.page, listAuditrailRequest.size))
         val auditrail = page.get().collect(Collectors.toList())
-        return auditrail.map { convertAudiTrailToAuditrailResponse(it) }
+        return auditrail.map { it.mapToAuditrailResponse() }
     }
 
     override fun update(id: Int, auditrailRequest: UpdateAuditrailRequest): AuditrailResponse {
@@ -59,29 +52,31 @@ class AuditrailServiceImpl(
             dataBefore = auditrailRequest.dataBefore
         }
         auditrailRepository.save(auditrail)
-        return convertAudiTrailToAuditrailResponse(auditrail)
+        return auditrail.mapToAuditrailResponse()
     }
 
     override fun delete(id: Int): AuditrailResponse {
         val auditrail = findAuditrailByIdOrThrowNotFound(id)
         auditrailRepository.delete(auditrail)
-        return convertAudiTrailToAuditrailResponse(auditrail)
+        return auditrail.mapToAuditrailResponse()
     }
 
     override fun get(id: Int): AuditrailResponse {
         val auditrail = findAuditrailByIdOrThrowNotFound(id)
-        return convertAudiTrailToAuditrailResponse(auditrail)
+        return auditrail.mapToAuditrailResponse()
     }
 
-    private fun convertAudiTrailToAuditrailResponse(auditrail: Auditrail): AuditrailResponse {
+
+    private fun Auditrail.mapToAuditrailResponse(): AuditrailResponse {
         return AuditrailResponse(
-            idAuditrail = auditrail.auditrail,
-            createAt = auditrail.createAt,
-            typeData = auditrail.typeData,
-            dataAfter = auditrail.dataAfter,
-            dataBefore = auditrail.dataBefore
+            idAuditrail = this.auditrail,
+            createAt = this.createAt,
+            typeData = this.typeData,
+            dataAfter = this.dataAfter,
+            dataBefore = this.dataBefore
         )
     }
+
 
     private fun findAuditrailByIdOrThrowNotFound(id: Int): Auditrail {
         val auditrail = auditrailRepository.findByIdOrNull(id)

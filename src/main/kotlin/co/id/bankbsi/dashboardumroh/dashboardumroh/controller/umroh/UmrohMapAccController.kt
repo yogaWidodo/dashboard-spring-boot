@@ -5,6 +5,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.mapacc.Um
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.umroh.UmrohMapAccResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohMapAccService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 class UmrohMapAccController(private val service: UmrohMapAccService) {
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     fun createMapAcc(@RequestBody body: UmrohMapAccRequest): WebResponse<UmrohMapAccResponse> {
         val response = service.create(body)
         return WebResponse(
@@ -31,6 +33,7 @@ class UmrohMapAccController(private val service: UmrohMapAccService) {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     fun getMapAcc(@PathVariable id: Int): WebResponse<UmrohMapAccResponse> {
         val response = service.get(id)
         return WebResponse(
@@ -40,17 +43,10 @@ class UmrohMapAccController(private val service: UmrohMapAccService) {
         )
     }
 
-    @DeleteMapping("/{id}")
-    fun deleteMapAcc(@PathVariable id: Int): WebResponse<String> {
-        service.delete(id)
-        return WebResponse(
-            code = 200,
-            status = "Data Deleted",
-            data = "Data with id $id has been deleted"
-        )
-    }
+
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     fun getAll(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int
