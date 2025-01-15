@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank
 
 data class CreateUserRequest(
 
-
     @field:NotBlank
     val userLdap:String,
 
@@ -19,6 +18,6 @@ data class CreateUserRequest(
     @field:NotBlank
     val status:String,
 
-    @field:NotBlank
-    val password:String,
+//    @field:NotBlank
+//    val password:String,
 )

@@ -1,6 +1,5 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Role
 import jakarta.validation.constraints.NotBlank
 
 

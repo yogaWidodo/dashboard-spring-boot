@@ -1,11 +1,10 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Role
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Role
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.CreateRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.ListRoleRequest
-//import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.RoleResponse

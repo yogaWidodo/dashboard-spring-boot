@@ -2,7 +2,7 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Menu
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Menu
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.CreateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.ListMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.UpdateMenuRequest
@@ -11,9 +11,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.MenuService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 import java.util.stream.Collectors
 
 @Service

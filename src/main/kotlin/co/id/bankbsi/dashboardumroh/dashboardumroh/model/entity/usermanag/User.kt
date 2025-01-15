@@ -1,13 +1,10 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity
+package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag
 
 import jakarta.persistence.*
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 import java.util.Date
 
 @Entity
-@Table(name = "table_user")
+@Table(name = "table_user", schema = "UMROH123")
 data class User(
 
     @Id
@@ -37,8 +34,8 @@ data class User(
     @Column(name = "last_login")
     var lastLogin: Date,
 
-    @Column(name = "password")
-    var passwordLdap: String,
+//    @Column(name = "password")
+//    var passwordLdap: String,
 )
 //) : UserDetails {
 //    override fun getAuthorities(): Collection<GrantedAuthority> {

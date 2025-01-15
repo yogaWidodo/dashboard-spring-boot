@@ -1,9 +1,9 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity
+package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag
 
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "table_role")
+@Table(name = "table_role", schema = "UMROH123")
 data class Role(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,8 @@ data class Role(
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "table_role_menu",
+        name = "table_role_menus",
+        schema = "UMROH123",
         joinColumns = [JoinColumn(name = "id_role")],
         inverseJoinColumns = [JoinColumn(name = "id_menu")]
     )

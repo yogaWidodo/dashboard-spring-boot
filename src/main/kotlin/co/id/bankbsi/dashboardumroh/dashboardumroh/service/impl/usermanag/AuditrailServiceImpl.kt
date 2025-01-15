@@ -1,13 +1,11 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Auditrail
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Auditrail
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.CreateAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.ListAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.UpdateAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuditrailResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.AuditrailRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.AuditrailService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill

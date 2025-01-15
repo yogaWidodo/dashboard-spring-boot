@@ -1,11 +1,11 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity
+package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag
 
 import jakarta.persistence.*
 import java.util.Date
 
 
 @Entity
-@Table(name = "table_auditrail")
+@Table(name = "table_auditrail", schema = "UMROH123")
 data class Auditrail(
 
     @Id

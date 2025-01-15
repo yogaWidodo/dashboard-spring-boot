@@ -1,8 +1,8 @@
 //package co.id.bankbsi.dashboardumroh.dashboardumroh.validation
 //
-//import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Menu
-//import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Role
-//import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
+//import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Menu
+//import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Role
+//import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.User
 //import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
 //import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
 //import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
@@ -37,14 +37,13 @@
 //
 //            // Create Admin User
 //            val adminUser = User(
-//                nama = "admin",
+//                nama = passwordEncoder.encode("admin"),
 //                unit = "IT",
 //                idRole = adminRole,
 //                status = "Active",
 //                createdAt = Date(),
 //                lastLogin = Date(),
 //                userLdap = "admin",
-//                passwordLdap = passwordEncoder.encode("123")
 //            )
 //            userRepository.save(adminUser)
 //        }

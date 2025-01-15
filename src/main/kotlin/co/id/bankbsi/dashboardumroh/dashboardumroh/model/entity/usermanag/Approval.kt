@@ -1,10 +1,10 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity
+package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag
 
 import jakarta.persistence.*
 import java.util.*
 
 @Entity
-@Table(name = "table_approval")
+@Table(name = "table_approval", schema = "UMROH123")
 data class Approval(
 
     @Id

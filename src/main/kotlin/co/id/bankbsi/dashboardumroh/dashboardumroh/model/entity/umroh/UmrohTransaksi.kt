@@ -8,7 +8,7 @@ import java.util.Date
 
 
 @Entity
-@Table(name = "UMROH_TRANSAKSI")
+@Table(name = "UMROH_TRANSAKSI", schema = "UMROH123")
 data class UmrohTransaksi(
     @Id
     @Column(name = "ID_TRANSAKSI")

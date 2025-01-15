@@ -1,7 +1,7 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Approval
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Approval
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.CreateApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.ListApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.UpdateApprovalRequest

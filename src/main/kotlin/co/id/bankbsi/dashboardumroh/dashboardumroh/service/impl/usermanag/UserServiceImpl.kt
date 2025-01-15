@@ -1,7 +1,7 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.User
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.CreateUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.ListUserRequest
@@ -30,14 +30,14 @@ class UserServiceImpl(
         val role = roleRepository.findById(createUserRequest.idRole).orElseThrow()
         isUserExist(createUserRequest.userLdap)
         val user = User(
-            nama = createUserRequest.nama,
+            nama = encoder.encode(createUserRequest.nama),
             unit = createUserRequest.unit,
             idRole = role,
             status = createUserRequest.status,
             createdAt = Date(),
             lastLogin = Date(),
             userLdap = createUserRequest.userLdap,
-            passwordLdap = encoder.encode(createUserRequest.password)
+//            passwordLdap = encoder.encode(createUserRequest.password)
         )
         userRepository.save(user)
         return user.mapToUserResponse()

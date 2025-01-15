@@ -7,7 +7,7 @@ import jakarta.persistence.Table
 import java.sql.Date
 
 @Entity
-@Table(name = "UMROH_MAP_ACC")
+@Table(name = "UMROH_MAP_ACC", schema = "UMROH123")
 data class UmrohMapAcc(
 
     @Id

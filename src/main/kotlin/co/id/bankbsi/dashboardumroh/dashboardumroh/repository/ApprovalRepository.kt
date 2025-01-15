@@ -1,6 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.repository
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.Approval
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Approval
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface ApprovalRepository:JpaRepository<Approval,Int> {

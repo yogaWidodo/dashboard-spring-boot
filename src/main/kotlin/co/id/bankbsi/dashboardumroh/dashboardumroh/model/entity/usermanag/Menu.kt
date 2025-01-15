@@ -1,10 +1,10 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity
+package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "table_menu")
+@Table(name = "table_menu", schema = "UMROH123")
 data class  Menu(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

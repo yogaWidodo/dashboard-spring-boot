@@ -1,6 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.repository
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.User
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
