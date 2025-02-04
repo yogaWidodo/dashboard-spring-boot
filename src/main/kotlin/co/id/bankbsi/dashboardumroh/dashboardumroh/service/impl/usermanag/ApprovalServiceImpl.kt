@@ -1,14 +1,21 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.umroh.UmrohListTravel
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Approval
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.CreateApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.ListApprovalRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.RemarkApproval
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.UpdateApprovalRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.listtravel.UmrohListTravelRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.ApprovalResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.ApprovalRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.umroh.UmrohListTravelRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.umroh.UmrohSettingRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.ApprovalService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
+import com.google.gson.JsonParser
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -18,6 +25,8 @@ import java.util.stream.Collectors
 @Service
 class ApprovalServiceImpl(
     val approvalRepository: ApprovalRepository,
+    val userRepository: UserRepository,
+    val umrohSettingRepository: UmrohSettingRepository,
     val validationUtill: ValidationUtill
 ) : ApprovalService {
     override fun create(createApprovalRequest: CreateApprovalRequest): ApprovalResponse {
@@ -60,12 +69,55 @@ class ApprovalServiceImpl(
         return approval.mapToApprovalResponse()
     }
 
-
-
     override fun get(id: Int): ApprovalResponse {
         val approval = findApprovalByIdOrThrowNotFound(id)
         return approval.mapToApprovalResponse()
     }
+
+    override fun approveChangeSettingParameter(idApproval: Int, userLdap: String): Boolean {
+        val approval = approvalRepository.findById(idApproval).orElseThrow()
+        val user = userRepository.findByUserLdap(userLdap) ?: return false
+        if (approval.status != "Pending") {
+            return false
+        }
+        val jsonObjectAfter = JsonParser.parseString(approval.dataAfter).asJsonObject
+        val idSetting = jsonObjectAfter.get("idSetting") ?: return false
+        val keySetting = jsonObjectAfter.get("keySetting")?.asString ?: return false
+        val valueSetting = jsonObjectAfter.get("valueSetting")?.asString ?: return false
+
+        val umrohSetting = umrohSettingRepository.findById(idSetting.asInt).orElseThrow() ?: return false
+
+        umrohSetting.keySetting = keySetting
+        umrohSetting.valueSetting = valueSetting
+        umrohSettingRepository.save(umrohSetting)
+
+        approval.approver = user.userLdap
+        approval.status = "Approved"
+        approval.updateAt = Date()
+        approval.remarkApproval = "Approved by ${user.userLdap}"
+        approvalRepository.save(approval)
+        return true
+    }
+
+    override fun rejectChangeSettingParameter(
+        idApproval: Int,
+        userLdap: String,
+        remarkApproval: RemarkApproval
+    ): Boolean {
+        val approval = approvalRepository.findById(idApproval).orElseThrow()
+        val user = userRepository.findByUserLdap(userLdap) ?: return false
+        if (approval.status != "Pending") {
+            return false
+        }
+
+        approval.approver = user.userLdap
+        approval.status = "Rejected"
+        approval.updateAt = Date()
+        approval.remarkApproval = remarkApproval.remarkApproval
+        approvalRepository.save(approval)
+        return true
+    }
+
 
     private fun Approval.mapToApprovalResponse(): ApprovalResponse {
         return ApprovalResponse(

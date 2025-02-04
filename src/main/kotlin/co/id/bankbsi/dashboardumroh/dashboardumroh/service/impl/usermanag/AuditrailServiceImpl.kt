@@ -36,7 +36,7 @@ class AuditrailServiceImpl(
     }
 
     override fun listAuditrail(listAuditrailRequest: ListAuditrailRequest): List<AuditrailResponse> {
-        val page = auditrailRepository.findAll(PageRequest.of(listAuditrailRequest.page, listAuditrailRequest.size))
+        val page = auditrailRepository.findAllAuditrailByCreateAtDesc(PageRequest.of(listAuditrailRequest.page, listAuditrailRequest.size))
         val auditrail = page.get().collect(Collectors.toList())
         return auditrail.map { it.mapToAuditrailResponse() }
     }

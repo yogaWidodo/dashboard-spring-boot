@@ -2,24 +2,28 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.CreateApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.ListApprovalRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.RemarkApproval
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.UpdateApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.ApprovalResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.ApprovalService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohSettingService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/")
 @CrossOrigin(originPatterns = ["*"])
-class ApprovalController(val service: ApprovalService) {
+@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
+class ApprovalController(
+    private val service: ApprovalService,
+) {
 
     @PostMapping(
         value = ["approval"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun createApproval(@RequestBody createApprovalRequest: CreateApprovalRequest): WebResponse<ApprovalResponse> {
         val approvalResponse = service.create(createApprovalRequest)
         return WebResponse(
@@ -33,7 +37,6 @@ class ApprovalController(val service: ApprovalService) {
         value = ["approval/{id}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun getApproval(@PathVariable id: Int): WebResponse<ApprovalResponse> {
         val approvalResponse = service.get(id)
         return WebResponse(
@@ -48,7 +51,6 @@ class ApprovalController(val service: ApprovalService) {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun update(
         @PathVariable id: Int,
         @RequestBody updateApprovalRequest: UpdateApprovalRequest
@@ -61,7 +63,6 @@ class ApprovalController(val service: ApprovalService) {
         )
     }
 
-    @PreAuthorize("hasRole('SPV')or hasRole('ADMIN')")
     @GetMapping(
         value = ["approval"],
         produces = ["application/json"],
@@ -75,6 +76,30 @@ class ApprovalController(val service: ApprovalService) {
         return WebResponse(
             code = 200,
             status = "OK",
+            data = response
+        )
+    }
+
+    @PostMapping("/approval/approve/{idApproval}/user/{userLdap}")
+    fun approveSetting(@PathVariable idApproval: Int, @PathVariable userLdap: String): WebResponse<Boolean> {
+        val response = service.approveChangeSettingParameter(idApproval, userLdap)
+        return WebResponse(
+            code = 200,
+            status = "APPROVED",
+            data = response
+        )
+    }
+
+    @PostMapping("/approval/reject/{idApproval}/user/{userLdap}")
+    fun rejectSetting(
+        @PathVariable idApproval: Int,
+        @PathVariable userLdap: String,
+        @RequestBody remarkApproval: RemarkApproval
+    ): WebResponse<Boolean> {
+        val response = service.rejectChangeSettingParameter(idApproval, userLdap, remarkApproval)
+        return WebResponse(
+            code = 200,
+            status = "REJECT",
             data = response
         )
     }

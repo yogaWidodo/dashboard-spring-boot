@@ -10,16 +10,15 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/auditrail")
 @CrossOrigin(originPatterns = ["*"])
+//@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class AuditrailController(val auditrailService: AuditrailService) {
 
     @PostMapping(
-        value = ["auditrail"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun createAuditrail(@RequestBody body: CreateAuditrailRequest): WebResponse<AuditrailResponse> {
         val auditrailResponse = auditrailService.create(body)
         return WebResponse(
@@ -30,10 +29,9 @@ class AuditrailController(val auditrailService: AuditrailService) {
     }
 
     @GetMapping(
-        value = ["auditrail/{id}"],
+        value = ["/{id}"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun get(@PathVariable id: Int): WebResponse<AuditrailResponse> {
         val auditrailResponse = auditrailService.get(id)
         return WebResponse(
@@ -46,11 +44,10 @@ class AuditrailController(val auditrailService: AuditrailService) {
 
 
     @PutMapping(
-        value = ["auditrail/{id}"],
+        value = ["/{id}"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun update(@PathVariable id: Int, @RequestBody body: UpdateAuditrailRequest): WebResponse<AuditrailResponse> {
         val auditrailResponse = auditrailService.update(id, body)
         return WebResponse(
@@ -61,10 +58,8 @@ class AuditrailController(val auditrailService: AuditrailService) {
     }
 
     @GetMapping(
-        value = ["auditrail"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun listAuditrail(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int
