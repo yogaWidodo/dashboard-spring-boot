@@ -11,15 +11,14 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/role")
 @CrossOrigin(originPatterns = ["*"])
+//@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class RoleController(val roleService: RoleService) {
     @PostMapping(
-        value = ["role"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun createRole(@RequestBody body: CreateRoleRequest): WebResponse<RoleResponse> {
         val roleResponse = roleService.create(body)
         return WebResponse(
@@ -29,8 +28,7 @@ class RoleController(val roleService: RoleService) {
         )
     }
 
-    @GetMapping("role/{idRole}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{idRole}")
     fun get(@PathVariable idRole: Int): WebResponse<RoleResponse> {
         val roleResponse = roleService.get(idRole)
         return WebResponse(
@@ -41,11 +39,10 @@ class RoleController(val roleService: RoleService) {
     }
 
     @PutMapping(
-        value = ["role/{idRole}"],
+        value = ["/{idRole}"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun updateRole(
         @PathVariable idRole:  Int,
         @RequestBody updateRoleRequest: UpdateRoleRequest
@@ -75,7 +72,7 @@ class RoleController(val roleService: RoleService) {
 //        )
 //    }
 
-    @GetMapping("role")
+    @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     fun listRole(
         @RequestParam(value = "size", defaultValue = "10") size: Int,

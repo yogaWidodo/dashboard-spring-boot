@@ -4,8 +4,6 @@ import jakarta.validation.constraints.NotBlank
 
 
 data class CreateApprovalRequest(
-
-
     @field:NotBlank
     val maker:String,
 

@@ -1,6 +1,7 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.controller
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
+import co.id.bankbsi.dashboardumroh.dashboardumroh.error.ForbiddenException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.UnauthorizedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
@@ -43,6 +44,17 @@ class ErrorController {
                 code = 401,
                 status = "UNAUTHORIZED",
                 data = "Unauthorized"
+            )
+        )
+    }
+
+    @ExceptionHandler(value = [ForbiddenException::class])
+    fun forbiddenException(forbidden: ForbiddenException): ResponseEntity<WebResponse<String>> {
+        return ResponseEntity.status(403).body(
+            WebResponse(
+                code = 403,
+                status = "FORBIDDEN",
+                data = "Forbidden"
             )
         )
     }

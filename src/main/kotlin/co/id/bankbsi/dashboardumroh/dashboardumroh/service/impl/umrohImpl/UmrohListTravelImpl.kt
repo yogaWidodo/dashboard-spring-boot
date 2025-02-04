@@ -49,7 +49,20 @@ class UmrohListTravelImpl(
     }
 
     override fun update(id: String, umrohListTravelUpdate: UmrohListTravelUpdate): UmrohListTravelResponse {
-        TODO("Not yet implemented")
+        validationUtill.validate(umrohListTravelUpdate)
+        val travel = findUmrohListTravelOrThrowNotFound(id)
+        travel.apply {
+            namaTravel = umrohListTravelUpdate.namaTravel
+            alamat = umrohListTravelUpdate.alamat
+            kota = umrohListTravelUpdate.kota
+            email = umrohListTravelUpdate.email
+            website = umrohListTravelUpdate.website
+            logoTravel = umrohListTravelUpdate.logoTravel
+            background = umrohListTravelUpdate.background
+            telp = umrohListTravelUpdate.telp
+        }
+        umrohListTravelRepository.save(travel)
+        return travel.toResponse()
     }
 
     override fun delete(id: String) {

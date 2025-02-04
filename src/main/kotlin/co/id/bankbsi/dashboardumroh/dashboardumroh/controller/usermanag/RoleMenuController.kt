@@ -4,19 +4,15 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRole
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.RoleMenuService
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/role-menu")
+//@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class RoleMenuController(
     private val roleMenuService: RoleMenuService
 ) {
     @PostMapping("/assign/{idRole}")
-    @PreAuthorize("hasRole('ADMIN')")
     fun assignMenuToRole(
         @PathVariable idRole: Int,
         @RequestBody request: UpdateRoleMenuRequest
@@ -30,7 +26,6 @@ class RoleMenuController(
     }
 
     @PostMapping("/unassign/{idRole}")
-    @PreAuthorize("hasRole('ADMIN')")
     fun unassignMenuToRole(
         @PathVariable idRole: Int,
         @RequestBody request: UpdateRoleMenuRequest

@@ -7,8 +7,8 @@ import jakarta.persistence.Table
 import java.util.Date
 
 @Entity
-@Table(name = "UMROH_MSPAYMENT", schema = "UMROH123")
-data class UmrohMsPayment(
+@Table(name = "UMROH_MSTPAYMENT", schema = "UMROH123")
+data class UmrohMstPayment(
 
     @Column(name = "ID_MASTER")
     @Id
@@ -120,5 +120,8 @@ data class UmrohMsPayment(
     val terminBayar: String,
 
     @Column(name = "KODE_REFERRAL")
-    val kodeReferral: String
+    val kodeReferral: String,
+
+    @Column(name = "TRX_REFF_NO")
+    val trxReffNo: String
 )

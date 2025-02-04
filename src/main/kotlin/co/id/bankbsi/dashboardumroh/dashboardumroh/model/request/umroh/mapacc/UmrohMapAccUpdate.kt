@@ -10,7 +10,6 @@ data class UmrohMapAccUpdate(
     val noRekening: String,
 
     val status: Int,
-    val lastUpdate: Date,
 
     val createBy:String,
 

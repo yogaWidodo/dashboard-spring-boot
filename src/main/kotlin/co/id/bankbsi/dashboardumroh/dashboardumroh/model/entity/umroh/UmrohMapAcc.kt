@@ -4,7 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import java.sql.Date
+import java.util.*
 
 @Entity
 @Table(name = "UMROH_MAP_ACC", schema = "UMROH123")
@@ -12,54 +12,54 @@ data class UmrohMapAcc(
 
     @Id
     @Column(name = "ID_MAP_ACC")
-    val idMapAcc: Int,
+    var idMapAcc: Int,
 
     @Column(name = "ID_TRAVEL")
     val idTravel: String,
 
     @Column(name = "KD_TRAVEL")
-    val kdTravel: String,
+    var kdTravel: String,
 
     @Column(name = "NO_REKENING")
-    val noRekening: String,
+    var noRekening: String,
 
     @Column(name = "STATUS")
-    val status: Int,
+    var status: Int,
 
     @Column(name = "CREATE_DATE")
     val createDate: Date,
 
     @Column(name = "LAST_UPDATE")
-    val lastUpdate: Date,
+    var lastUpdate: Date,
 
     @Column(name = "CREATE_BY")
-    val createBy:String,
+    var createBy:String,
 
 
     @Column(name = "NAMA_TRAVEL")
-    val namaTravel: String,
+    var namaTravel: String,
 
     @Column(name = "NOMINAL_FEE")
-    val nominalFee :Int,
+    var nominalFee :Int,
 
     @Column(name = "ALAMAT")
-    val alamat: String,
+    var alamat: String,
 
     @Column(name = "KOTA")
-    val kota: String,
+    var kota: String,
 
     @Column(name = "EMAIL")
-    val email: String,
+    var email: String,
 
     @Column(name = "WEBSITE")
-    val website: String,
+    var website: String,
 
     @Column(name = "LOGO_TRAVEL")
-    val logoTravel: String,
+    var logoTravel: String,
 
     @Column(name = "BACKGROUND")
-    val backround: String,
+    var backround: String,
 
     @Column(name = "TELP")
-    val telp: String
+    var telp: String
 )

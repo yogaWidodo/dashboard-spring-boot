@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/")
 @CrossOrigin(originPatterns = ["*"])
+//@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class MenuController(val menuService: MenuService) {
 
     @PostMapping(
@@ -19,7 +20,6 @@ class MenuController(val menuService: MenuService) {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun createMenu(@RequestBody body: CreateMenuRequest): WebResponse<MenuResponse> {
         val result = menuService.create(body)
         return WebResponse(
@@ -33,7 +33,6 @@ class MenuController(val menuService: MenuService) {
         value = ["menu/{namaMenu}"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun get(@PathVariable namaMenu: String): WebResponse<MenuResponse> {
         val menuResponse = menuService.get(namaMenu)
         return WebResponse(
@@ -48,7 +47,6 @@ class MenuController(val menuService: MenuService) {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun updateMenu(
         @PathVariable namaMenu: String,
         @RequestBody updateMenuRequest: UpdateMenuRequest
@@ -65,7 +63,6 @@ class MenuController(val menuService: MenuService) {
         value = ["menu"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun listMenu(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int

@@ -3,8 +3,6 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.paymentr
 import java.util.*
 
 data class UmrohMstPaymentRequest(
-
-
     val idMaster: String,
 
     val noCif: String,
@@ -76,5 +74,7 @@ data class UmrohMstPaymentRequest(
 
     val terminBayar: String,
 
-    val kodeReferral: String
+    val kodeReferral: String,
+
+    val trxReffNo:String
 )

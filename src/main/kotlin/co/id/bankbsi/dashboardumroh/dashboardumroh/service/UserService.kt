@@ -5,6 +5,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.CreateUser
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.ListUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.UpdateUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.UserResponse
+import jakarta.servlet.http.HttpServletRequest
 import java.util.Date
 
 interface UserService {
@@ -12,5 +13,5 @@ interface UserService {
     fun get(userLdap: String): UserResponse
     fun list(listUserRequest: ListUserRequest): List<UserResponse>
     fun update(userLdap: String, updateUserRequest: UpdateUserRequest): UserResponse
-    fun updateLastLogin(userLdap: String, lastLogin: Date): UserResponse
+    fun updateLastLogin(userLdap: String, lastLogin: Date, request: HttpServletRequest): UserResponse
 }

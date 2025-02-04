@@ -2,8 +2,6 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.listtrav
 
 data class UmrohListTravelUpdate(
 
-    val kdTravel: String,
-
     val namaTravel: String,
 
     val alamat: String,
@@ -16,7 +14,7 @@ data class UmrohListTravelUpdate(
 
     val logoTravel: String,
 
-    val backround: String,
+    val background: String,
 
     val telp: String
 )

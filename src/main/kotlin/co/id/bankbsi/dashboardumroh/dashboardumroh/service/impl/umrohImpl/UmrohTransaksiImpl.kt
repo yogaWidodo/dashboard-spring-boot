@@ -45,7 +45,8 @@ class UmrohTransaksiImpl(
             pd1 = umrohTransaksiRequest.pd1,
             pd2 = umrohTransaksiRequest.pd2,
             pd3 = umrohTransaksiRequest.pd3,
-            pd4 = umrohTransaksiRequest.pd4
+            pd4 = umrohTransaksiRequest.pd4,
+            reffno = umrohTransaksiRequest.reffNo
         )
         umrohTransaksiRepository.save(transaksi)
         return transaksi.toResponse()
@@ -110,7 +111,8 @@ class UmrohTransaksiImpl(
         pd1 = this.pd1,
         pd2 = this.pd2,
         pd3 = this.pd3,
-        pd4 = this.pd4
+        pd4 = this.pd4,
+        reffNo = this.reffno
     )
 
     private fun findTransaksiByIdOrThrowNotFound(id: String): UmrohTransaksi {

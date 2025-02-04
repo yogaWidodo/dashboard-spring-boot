@@ -9,13 +9,13 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/umroh-mstpayment")
+@RequestMapping("/api/umroh-settlement")
 @CrossOrigin
+//@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class UmrohMstPaymentController(
     private val umrohMstPaymentService: UmrohMstPaymentService
 ) {
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     fun createMsPayment(@RequestBody body:UmrohMstPaymentRequest):WebResponse<UmrohMsPaymentResponse> {
         val response = umrohMstPaymentService.create(body)
         return WebResponse(
@@ -26,7 +26,6 @@ class UmrohMstPaymentController(
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     fun getMsPayment(@PathVariable id: String): WebResponse<UmrohMsPaymentResponse> {
         val response = umrohMstPaymentService.get(id)
         return WebResponse(
@@ -39,7 +38,6 @@ class UmrohMstPaymentController(
 
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     fun listMsPayment(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int

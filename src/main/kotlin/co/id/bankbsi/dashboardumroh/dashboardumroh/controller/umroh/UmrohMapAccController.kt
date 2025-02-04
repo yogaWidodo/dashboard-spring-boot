@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/map-acc")
 @CrossOrigin
+//@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class UmrohMapAccController(private val service: UmrohMapAccService) {
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     fun createMapAcc(@RequestBody body: UmrohMapAccRequest): WebResponse<UmrohMapAccResponse> {
         val response = service.create(body)
         return WebResponse(
@@ -33,7 +33,6 @@ class UmrohMapAccController(private val service: UmrohMapAccService) {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     fun getMapAcc(@PathVariable id: Int): WebResponse<UmrohMapAccResponse> {
         val response = service.get(id)
         return WebResponse(
@@ -46,7 +45,6 @@ class UmrohMapAccController(private val service: UmrohMapAccService) {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     fun getAll(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int

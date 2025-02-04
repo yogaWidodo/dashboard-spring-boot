@@ -2,21 +2,25 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Auditrail
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Menu
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.CreateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.ListMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.UpdateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.AuditrailRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.MenuService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
+import java.util.*
 import java.util.stream.Collectors
 
 @Service
 class MenuServiceImpl(
     val menuRepository: MenuRepository,
+    val auditrailRepository: AuditrailRepository,
     val validationUtill: ValidationUtill,
 ) : MenuService {
 
@@ -39,11 +43,18 @@ class MenuServiceImpl(
     override fun update(namaMenu: String, updateMenuRequest: UpdateMenuRequest): MenuResponse {
         val menu = findMenuByNamaOrThrowNotFound(namaMenu)
         validationUtill.validate(updateMenuRequest)
-        menu.apply {
+        val updatedMenu = menu.apply {
             this.namaMenu = updateMenuRequest.namaMenu
             status = updateMenuRequest.status
         }
-        menuRepository.save(menu)
+        menuRepository.save(updatedMenu)
+        val auditrail = Auditrail(
+            createAt = Date(),
+            typeData = "Update Menu",
+            dataBefore = menu.namaMenu,
+            dataAfter = updatedMenu.namaMenu,
+        )
+        auditrailRepository.save(auditrail)
         return menu.mapToMenuResponse()
     }
 
@@ -68,6 +79,7 @@ class MenuServiceImpl(
             throw DataAlreadyAssignedException()
         }
     }
+
     private fun Menu.mapToMenuResponse(): MenuResponse {
         return MenuResponse(
             idMenu = idMenu,

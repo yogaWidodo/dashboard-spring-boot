@@ -25,4 +25,5 @@ data class UmrohTransaksiRequest(
     val pd2: String,
     val pd3: String,
     val pd4: String,
+    val reffNo: String,
 )

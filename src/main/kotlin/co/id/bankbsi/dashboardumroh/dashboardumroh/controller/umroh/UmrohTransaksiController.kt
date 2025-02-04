@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/transaksi-umroh")
+//@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class UmrohTransaksiController(
     private val umrohTransaksiService: UmrohTransaksiService
 ) {
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     fun create(@RequestBody body: UmrohTransaksiRequest): WebResponse<UmrohTransaksiResponse> {
         val response = umrohTransaksiService.create(body)
         return WebResponse(
@@ -28,7 +28,6 @@ class UmrohTransaksiController(
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('REPORTING') or hasRole('SPV') or hasRole('ADMIN')")
     fun get(@PathVariable id: String): WebResponse<UmrohTransaksiResponse> {
         val response = umrohTransaksiService.get(id)
         return WebResponse(
@@ -39,7 +38,6 @@ class UmrohTransaksiController(
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     fun update(
         @PathVariable id: String,
         @RequestBody update: UmrohTransaksiUpdate
@@ -54,7 +52,6 @@ class UmrohTransaksiController(
 
 
     @GetMapping
-    @PreAuthorize("hasRole('REPORTING') or hasRole('SPV') or hasRole('ADMIN')")
     fun list(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int

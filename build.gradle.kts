@@ -38,6 +38,8 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-data-rest:1.8.0")
 	runtimeOnly("org.springdoc:springdoc-openapi-kotlin:1.8.0")
 
+	implementation("com.google.code.gson:gson:2.10.1") // Gson library
+
 
 	runtimeOnly("com.oracle.database.jdbc:ojdbc11")
 	runtimeOnly("org.postgresql:postgresql")

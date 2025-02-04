@@ -11,12 +11,11 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/")
+//@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class UserController(val userService: UserService) {
 
     @PostMapping("user")
-    @PreAuthorize("hasRole('ADMIN')")
     fun createUser(@RequestBody body: CreateUserRequest): WebResponse<UserResponse> {
         val userResponse = userService.create(body)
         return WebResponse(
@@ -28,7 +27,6 @@ class UserController(val userService: UserService) {
 
 
     @GetMapping("user/{userLdap}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
     fun get(@PathVariable userLdap: String): WebResponse<UserResponse> {
         val userResponse = userService.get(userLdap)
         return WebResponse(
@@ -43,7 +41,6 @@ class UserController(val userService: UserService) {
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun updateUser(
         @PathVariable userLdap: String,
         @RequestBody updateUserRequest: UpdateUserRequest
@@ -60,7 +57,6 @@ class UserController(val userService: UserService) {
         value = ["user"],
         produces = ["application/json"]
     )
-    @PreAuthorize("hasRole('ADMIN')")
     fun listUser(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int

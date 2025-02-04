@@ -40,7 +40,7 @@ data class UmrohMsPaymentResponse(
 
     val tipeKamar: String,
 
-    val catatan: String,
+    val catatan: String?,
 
     val noPesanan: String,
 
@@ -48,9 +48,9 @@ data class UmrohMsPaymentResponse(
 
     val sisaBayar: Int,
 
-    val tanggalPelunasan: String,
+    val tanggalPelunasan: String?,
 
-    val tanggalPembatalan: String,
+    val tanggalPembatalan: String?,
 
     val statusBayar: Int,
 
@@ -58,7 +58,7 @@ data class UmrohMsPaymentResponse(
 
     val updateDate: Date,
 
-    val tanggalJatuhTempo: String,
+    val tanggalJatuhTempo: String?,
 
     val statusSettlement: String,
 
@@ -76,5 +76,7 @@ data class UmrohMsPaymentResponse(
 
     val terminBayar: String,
 
-    val kodeReferral: String
+    val kodeReferral: String?,
+
+    val trxReffNo:String
 )

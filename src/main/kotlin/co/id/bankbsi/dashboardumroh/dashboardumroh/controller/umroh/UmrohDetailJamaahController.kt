@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/detail-jamaah")
 @CrossOrigin
+//@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class UmrohDetailJamaahController(
     val service: UmrohDetailJamaahService
 ) {
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     fun create(@RequestBody body: UmrohDetailJamaahRequest): WebResponse<UmrohDetailJamaahResponse> {
         val response = service.create(body)
         return WebResponse(
@@ -27,7 +27,6 @@ class UmrohDetailJamaahController(
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     fun get(@PathVariable id: String): WebResponse<UmrohDetailJamaahResponse> {
         val response = service.get(id)
         return WebResponse(
@@ -40,7 +39,6 @@ class UmrohDetailJamaahController(
 
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     fun getAll(
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "page", defaultValue = "0") page: Int

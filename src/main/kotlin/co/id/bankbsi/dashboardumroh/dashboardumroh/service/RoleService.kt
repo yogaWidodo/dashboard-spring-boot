@@ -12,5 +12,4 @@ interface  RoleService {
     fun update(idRole:Int, updateRoleRequest: UpdateRoleRequest):RoleResponse
 //    fun updateMenus(idRole: Int, updateRoleMenuRequest: UpdateRoleMenuRequest):RoleResponse
     fun get(idRole: Int):RoleResponse
-
 }

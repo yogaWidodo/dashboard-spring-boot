@@ -45,7 +45,19 @@ class UmrohDetailJamaahImpl(
     }
 
     override fun update(id: String, umrohDetailJamaahUpdate: UmrohDetailJamaahUpdate): UmrohDetailJamaahResponse {
-        TODO("Not yet implemented")
+        val travel = findUmrohDetailJamaahOrThrowNotFound(id)
+        travel.apply {
+            idTblJamaah = umrohDetailJamaahUpdate.idTblJamaah
+            idMaster = umrohDetailJamaahUpdate.idMaster
+            nik = umrohDetailJamaahUpdate.nik
+            noHp = umrohDetailJamaahUpdate.noHp
+            nama = umrohDetailJamaahUpdate.nama
+            jkel = umrohDetailJamaahUpdate.jkel
+            idJamaah = umrohDetailJamaahUpdate.idJamaah
+            noRekHaji = umrohDetailJamaahUpdate.noRekHaji
+        }
+        umrohDetailJamaahRepository.save(travel)
+        return travel.toResponse()
     }
 
     override fun delete(id: String) {

@@ -18,62 +18,65 @@ data class UmrohTransaksi(
     val idMaster: String,
 
     @Column(name = "ACC_DEBIT")
-    val accDebit: String,
+    val accDebit: String?,
 
     @Column(name = "ACC_CREDIT")
-    val accCredit: String,
+    val accCredit: String?,
 
     @Column(name = "AMOUNT")
-    val amount: Int,
+    val amount: Int?,
 
     @Column(name = "PAYMENT_DETAILS")
-    val paymentDetails: String,
+    val paymentDetails: String?,
 
     @Column(name = "FT_REF")
-    val ftRef: String,
+    val ftRef: String?,
 
     @Column(name = "STATUS")
-    var status: Int,
+    var status: Int?,
 
     @Column(name = "CREATE_DATE")
-    val createDate: String,
+    val createDate: String?,
 
     @Column(name = "CREATE_TIME")
-    val createTime: Date,
+    val createTime: Date?,
 
     @Column(name = "UPDATE_DATE")
-    var updateDate: String,
+    var updateDate: String?,
 
     @Column(name = "UPDATE_TIME")
-    var updateTime: Date,
+    var updateTime: Date?,
 
     @Column(name = "JENIS_BAYAR")
-    val jenisBayar: String,
+    val jenisBayar: String?,
 
     @Column(name = "REV_FT")
-    var revFt: String,
+    var revFt: String?,
 
     @Column(name = "REV_DATE")
-    var revDate: String,
+    var revDate: String?,
 
     @Column(name = "REV_TIME")
-    var revTime: Date,
+    var revTime: Date?,
 
     @Column(name = "REV_STATUS")
-    val revStatus: Int,
+    val revStatus: Int?,
 
     @Column(name = "PID")
-    var pid: String,
+    var pid: String?,
 
     @Column(name = "PD1")
-    var pd1: String,
+    var pd1: String?,
 
     @Column(name = "PD2")
-    var pd2: String,
+    var pd2: String?,
 
     @Column(name = "PD3")
-    var pd3: String,
+    var pd3: String?,
 
     @Column(name = "PD4")
-    var pd4: String,
+    var pd4: String?,
+
+    @Column(name = "REFFNO")
+    var reffno: String?,
 )

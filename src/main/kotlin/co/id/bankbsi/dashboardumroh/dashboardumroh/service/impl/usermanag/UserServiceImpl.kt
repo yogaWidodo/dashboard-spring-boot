@@ -3,17 +3,21 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.User
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Auditrail
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.CreateUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.ListUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.UpdateUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.UserResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.AuditrailRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.UserService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.stream.Collectors
 
@@ -22,9 +26,13 @@ class UserServiceImpl(
     val userRepository: UserRepository,
     val validationUtill: ValidationUtill,
     val roleRepository: RoleRepository,
+    val auditrailRepository: AuditrailRepository,
     val encoder: PasswordEncoder
 ) : UserService {
 
+    private val formatter: SimpleDateFormat by lazy {
+        SimpleDateFormat("EEEE, d MMM HH:mm:ss z yyyy", Locale("id", "ID"))
+    }
     override fun create(createUserRequest: CreateUserRequest): UserResponse {
         validationUtill.validate(createUserRequest)
         val role = roleRepository.findById(createUserRequest.idRole).orElseThrow()
@@ -61,17 +69,25 @@ class UserServiceImpl(
             nama = updateUserRequest.nama
             unit = updateUserRequest.unit
             status = updateUserRequest.status
-
         }
         userRepository.save(user)
         return user.mapToUserResponse()
     }
 
-    override fun updateLastLogin(userLdap: String, lastLogin: Date): UserResponse {
+    override fun updateLastLogin(userLdap: String, lastLogin: Date, request: HttpServletRequest): UserResponse {
         val user = userRepository.findByUserLdap(userLdap)
+
         if (user != null) {
+            val ipAddress = request.getHeader("X-FORWARDED-FOR") ?: request.remoteAddr
+            val auditrail = Auditrail(
+                createAt = Date(),
+                typeData = "${user.userLdap} | $ipAddress",
+                dataBefore = formatter.format(user.lastLogin),
+                dataAfter = formatter.format(lastLogin)
+            )
             user.lastLogin = lastLogin
             userRepository.save(user)
+            auditrailRepository.save(auditrail)
             return user.mapToUserResponse()
         } else {
             throw NotFoundException()

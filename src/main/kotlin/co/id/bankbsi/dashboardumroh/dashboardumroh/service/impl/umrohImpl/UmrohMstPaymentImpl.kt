@@ -1,6 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.umrohImpl
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.umroh.UmrohMsPayment
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.umroh.UmrohMstPayment
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.paymentrequest.PaymentListRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.paymentrequest.UmrohMstPaymentRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.umroh.UmrohMsPaymentResponse
@@ -13,13 +13,13 @@ import java.util.stream.Collectors
 
 
 @Service
-class UmrohMsPaymentImpl(
+class UmrohMstPaymentImpl(
     private val umrohMsPaymentRepository: UmrohMsPaymentRepository,
     private val validationUtill: ValidationUtill
 ) : UmrohMstPaymentService {
     override fun create(umrohMsPaymentRequest: UmrohMstPaymentRequest): UmrohMsPaymentResponse {
         validationUtill.validate(umrohMsPaymentRequest)
-        val umrohMsPayment = UmrohMsPayment(
+        val umrohMsPayment = UmrohMstPayment(
             idMaster = umrohMsPaymentRequest.idMaster,
             noCif = umrohMsPaymentRequest.noCif,
             noAcc = umrohMsPaymentRequest.noAcc,
@@ -56,7 +56,8 @@ class UmrohMsPaymentImpl(
             kotaKeberangkatan = umrohMsPaymentRequest.kotaKeberangkatan,
             statusFee = umrohMsPaymentRequest.statusFee,
             terminBayar = umrohMsPaymentRequest.terminBayar,
-            kodeReferral = umrohMsPaymentRequest.kodeReferral
+            kodeReferral = umrohMsPaymentRequest.kodeReferral,
+            trxReffNo = umrohMsPaymentRequest.trxReffNo,
         )
         umrohMsPaymentRepository.save(umrohMsPayment)
         return umrohMsPayment.toResponse()
@@ -86,12 +87,12 @@ class UmrohMsPaymentImpl(
         umrohMsPaymentRepository.delete(msPayment)
     }
 
-    private fun findMsPaymentByIdOrThrowNotFound(id: String): UmrohMsPayment {
+    private fun findMsPaymentByIdOrThrowNotFound(id: String): UmrohMstPayment {
         return umrohMsPaymentRepository.findById(id)
             .orElseThrow { IllegalArgumentException("UmrohMsPayment not found with id $id") }
     }
 
-    private fun UmrohMsPayment.toResponse() = UmrohMsPaymentResponse(
+    private fun UmrohMstPayment.toResponse() = UmrohMsPaymentResponse(
         idMaster = this.idMaster,
         noCif = this.noCif,
         noAcc = this.noAcc,
@@ -128,6 +129,7 @@ class UmrohMsPaymentImpl(
         kotaKeberangkatan = this.kotaKeberangkatan,
         statusFee = this.statusFee,
         terminBayar = this.terminBayar,
-        kodeReferral = this.kodeReferral
+        kodeReferral = this.kodeReferral,
+        trxReffNo = this.trxReffNo,
     )
 }

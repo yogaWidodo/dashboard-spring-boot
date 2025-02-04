@@ -1,5 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -12,17 +13,20 @@ typealias ApplicationUser = co.id.bankbsi.dashboardumroh.dashboardumroh.model.en
 @Service
 class CustomUserDetailService(
     private val userRepository: UserRepository,
+    private val roleRepository: RoleRepository
 ) : UserDetailsService {
     override fun loadUserByUsername(userLdap: String): UserDetails =
         userRepository.findByUserLdap(userLdap)
             ?.mapToUserDetails()
             ?: throw UsernameNotFoundException("User not found")
 
-    private fun ApplicationUser.mapToUserDetails(): UserDetails =
-        User.builder()
+
+    private fun ApplicationUser.mapToUserDetails(): UserDetails {
+        val roles = roleRepository.findAll().map { it.namaRole }
+        return User.builder()
             .username(this.userLdap)
             .password(this.nama)
-            .roles(this.idRole.namaRole)
+            .roles(*roles.toTypedArray())
             .build()
-
+    }
 }

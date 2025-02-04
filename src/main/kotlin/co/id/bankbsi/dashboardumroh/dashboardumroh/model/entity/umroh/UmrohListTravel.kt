@@ -13,31 +13,29 @@ data class UmrohListTravel(
     val idList: String,
 
     @Column(name = "KD_TRAVEL")
-    val kdTravel: String,
+    var kdTravel: String,
 
     @Column(name = "NAMA_TRAVEL")
-    val namaTravel: String,
+    var namaTravel: String,
 
     @Column(name = "ALAMAT")
-    val alamat: String,
+    var alamat: String,
 
     @Column(name = "KOTA")
-    val kota: String,
+    var kota: String,
 
     @Column(name = "EMAIL")
-    val email: String,
+    var email: String,
 
     @Column(name = "WEBSITE")
-    val website: String,
+    var website: String,
 
     @Column(name = "LOGO_TRAVEL")
-    val logoTravel: String,
+    var logoTravel: String,
 
     @Column(name = "BACKGROUND")
-    val background: String,
+    var background: String,
 
     @Column(name = "TELP")
-    val telp: String
-
-
+    var telp: String
 )

@@ -10,7 +10,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohMapAccServ
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
-import java.sql.Date
+import java.util.*
 import java.util.stream.Collectors
 
 
@@ -62,7 +62,27 @@ class UmrohMapAccImpl(
     }
 
     override fun update(id: Int, umrohMapAccUpdate: UmrohMapAccUpdate): UmrohMapAccResponse {
-        TODO("Not yet implemented")
+        validationUtill.validate(umrohMapAccUpdate)
+        val umrohMapAcc = findUmrohMapAccByIdOrThrowNotFound(id)
+        umrohMapAcc.apply {
+            kdTravel = umrohMapAccUpdate.kdTravel
+            noRekening = umrohMapAccUpdate.noRekening
+            status = umrohMapAccUpdate.status
+            lastUpdate = Date()
+            createBy = umrohMapAccUpdate.createBy
+            idMapAcc = umrohMapAccUpdate.idMapAcc
+            namaTravel = umrohMapAccUpdate.namaTravel
+            nominalFee = umrohMapAccUpdate.nominalFee
+            alamat = umrohMapAccUpdate.alamat
+            kota = umrohMapAccUpdate.kota
+            email = umrohMapAccUpdate.email
+            website = umrohMapAccUpdate.website
+            logoTravel = umrohMapAccUpdate.logoTravel
+            backround = umrohMapAccUpdate.backround
+            telp = umrohMapAccUpdate.telp
+        }
+        umrohMapAccRepository.save(umrohMapAcc)
+        return umrohMapAcc.toResponse()
     }
 
     override fun delete(id: Int) {

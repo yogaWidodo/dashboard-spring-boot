@@ -10,26 +10,26 @@ import jakarta.persistence.Table
 data class UmrohDetailJamaah(
     @Id
     @Column(name = "ID_TBLJAMAAH")
-    val idTblJamaah:String,
+    var idTblJamaah:String,
 
     @Column(name = "ID_MASTER")
-    val idMaster:String,
+    var idMaster:String,
 
     @Column(name = "NIK")
-    val nik:String,
+    var nik:String,
 
     @Column(name = "NO_HP")
-    val noHp:String,
+    var noHp:String,
 
     @Column(name = "NAMA")
-    val nama:String,
+    var nama:String,
 
     @Column(name = "JKEL")
-    val jkel:String,
+    var jkel:String,
 
     @Column(name = "ID_JAMAAH")
-    val idJamaah:String,
+    var idJamaah:String,
 
     @Column(name = "NO_REK_HAJI")
-    val noRekHaji:String
+    var noRekHaji:String
 )
