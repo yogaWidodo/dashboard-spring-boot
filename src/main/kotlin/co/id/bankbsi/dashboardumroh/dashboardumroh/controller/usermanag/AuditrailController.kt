@@ -3,10 +3,9 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.usermanag
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.CreateAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.ListAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.UpdateAuditrailRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuditrailResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.AuditrailResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.AuditrailService
-import org.springframework.security.access.prepost.PreAuthorize
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.AuditrailService
 import org.springframework.web.bind.annotation.*
 
 @RestController

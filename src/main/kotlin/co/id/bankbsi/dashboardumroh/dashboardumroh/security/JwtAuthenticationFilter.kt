@@ -1,13 +1,11 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.TokenService
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.UserService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.TokenService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.UserService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.CustomUserDetailService
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.TokenServiceImpl
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
 import jakarta.servlet.FilterChain
-import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

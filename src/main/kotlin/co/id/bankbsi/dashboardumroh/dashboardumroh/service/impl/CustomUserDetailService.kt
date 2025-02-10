@@ -1,7 +1,7 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.RoleRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.UserRepository
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

@@ -2,12 +2,13 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Auditrail
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.mapToAuditrailResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.CreateAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.ListAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.UpdateAuditrailRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuditrailResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.AuditrailRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.AuditrailService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.AuditrailResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.AuditrailRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.AuditrailService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
@@ -65,15 +66,7 @@ class AuditrailServiceImpl(
     }
 
 
-    private fun Auditrail.mapToAuditrailResponse(): AuditrailResponse {
-        return AuditrailResponse(
-            idAuditrail = this.auditrail,
-            createAt = this.createAt,
-            typeData = this.typeData,
-            dataAfter = this.dataAfter,
-            dataBefore = this.dataBefore
-        )
-    }
+
 
 
     private fun findAuditrailByIdOrThrowNotFound(id: Int): Auditrail {

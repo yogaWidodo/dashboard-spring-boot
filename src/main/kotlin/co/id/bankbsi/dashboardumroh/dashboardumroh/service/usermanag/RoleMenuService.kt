@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.service
+package co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleMenuRequest
 

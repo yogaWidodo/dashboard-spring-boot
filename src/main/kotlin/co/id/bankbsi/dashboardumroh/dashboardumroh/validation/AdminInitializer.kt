@@ -3,9 +3,9 @@
 //import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Menu
 //import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Role
 //import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.User
-//import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
-//import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
-//import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
+//import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.MenuRepository
+//import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.RoleRepository
+//import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.UserRepository
 //import org.springframework.boot.CommandLineRunner
 //import org.springframework.context.annotation.Bean
 //import org.springframework.context.annotation.Configuration

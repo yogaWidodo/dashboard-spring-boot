@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.model.response
+package co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag
 
 import java.util.*
 

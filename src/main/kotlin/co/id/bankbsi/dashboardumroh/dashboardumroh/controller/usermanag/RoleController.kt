@@ -3,9 +3,10 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.usermanag
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.CreateRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.ListRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.RoleResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.ApprovalResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.RoleResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.RoleService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.RoleService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
@@ -15,12 +16,17 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin(originPatterns = ["*"])
 //@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class RoleController(val roleService: RoleService) {
+
     @PostMapping(
+        value = ["/{userLdap}"],
         produces = ["application/json"],
         consumes = ["application/json"]
     )
-    fun createRole(@RequestBody body: CreateRoleRequest): WebResponse<RoleResponse> {
-        val roleResponse = roleService.create(body)
+    fun createRole(
+        @RequestBody body: CreateRoleRequest,
+        @PathVariable userLdap: String
+    ): WebResponse<ApprovalResponse> {
+        val roleResponse = roleService.create(body, userLdap)
         return WebResponse(
             code = 200,
             status = "OK",
@@ -44,7 +50,7 @@ class RoleController(val roleService: RoleService) {
         consumes = ["application/json"]
     )
     fun updateRole(
-        @PathVariable idRole:  Int,
+        @PathVariable idRole: Int,
         @RequestBody updateRoleRequest: UpdateRoleRequest
     ): WebResponse<RoleResponse> {
         val roleResponse = roleService.update(idRole, updateRoleRequest)

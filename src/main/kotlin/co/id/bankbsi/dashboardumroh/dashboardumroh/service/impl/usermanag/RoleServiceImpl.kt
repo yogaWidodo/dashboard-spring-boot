@@ -1,38 +1,72 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Role
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.*
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.CreateRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.ListRoleRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.RoleResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.RoleService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.ApprovalResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.RoleResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.ApprovalRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.AuditrailRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.RoleRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.UserRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.RoleService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.util.*
 import java.util.stream.Collectors
 
 @Service
 class RoleServiceImpl(
-    val roleRepository: RoleRepository,
-    val menuRepository: MenuRepository,
-    val validationUtill: ValidationUtill,
+    private val roleRepository: RoleRepository,
+    private val approvalRepository: ApprovalRepository,
+    private val userRepository: UserRepository,
+    private val auditrailRepository: AuditrailRepository,
+    private val validationUtill: ValidationUtill,
 ) : RoleService {
-    override fun create(createRoleRequest: CreateRoleRequest): RoleResponse {
+//    override fun create(createRoleRequest: CreateRoleRequest, userLdap: String): RoleResponse {
+//        validationUtill.validate(createRoleRequest)
+//        isRoleExist(createRoleRequest.namaRole)
+//        val role = Role(
+//            namaRole = createRoleRequest.namaRole
+//        )
+//        val menus = menuRepository.findAllById(createRoleRequest.idMenu)
+//        role.menus = role.menus.plus(menus)
+//        roleRepository.save(role)
+//        return role.mapToRoleResponse()
+//    }
+
+    override fun create(createRoleRequest: CreateRoleRequest, userLdap: String): ApprovalResponse {
         validationUtill.validate(createRoleRequest)
         isRoleExist(createRoleRequest.namaRole)
-        val role = Role(
-            namaRole = createRoleRequest.namaRole
+        val user = userRepository.findByUserLdap(userLdap) ?: throw NotFoundException()
+
+
+        val dataAfter = "{namaRole: ${createRoleRequest.namaRole}, idMenu: ${createRoleRequest.idMenu}}"
+        val approval = Approval(
+            maker = user.userLdap,
+            approver = "",
+            status = "Pending",
+            typeData = "Add Role",
+            dataBefore = "",
+            dataAfter = dataAfter,
+            remarkApproval = "",
+            createAt = Date(),
+            updateAt = Date()
         )
-        val menus = menuRepository.findAllById(createRoleRequest.idMenu)
-        role.menus = role.menus.plus(menus)
-        roleRepository.save(role)
-        return role.mapToRoleResponse()
+        val auditrail = Auditrail(
+            createAt = Date(),
+            typeData = "Add Role",
+            dataBefore = "",
+            dataAfter = dataAfter
+        )
+        auditrailRepository.save(auditrail)
+        approvalRepository.save(approval)
+        return approval.mapToApprovalResponse()
     }
 
     override fun list(listRoleRequest: ListRoleRequest): List<RoleResponse> {
@@ -51,40 +85,13 @@ class RoleServiceImpl(
         return role.mapToRoleResponse()
     }
 
-//    override fun updateMenus(idRole: Int, updateRoleMenuRequest: UpdateRoleMenuRequest): RoleResponse {
-//        val role = findRoleByIdOrThrowNotFound(idRole)
-//        validationUtill.validate(updateRoleMenuRequest)
-//        role.apply {
-//            val oldMenu = menus.find { it.namaMenu == updateRoleMenuRequest.oldMenuNama }
-//            val newMenu = menuRepository.findByNamaMenu(updateRoleMenuRequest.newMenuNama)
-//                ?: throw NotFoundException()
-//            if (oldMenu != null) {
-//                menus.minus(oldMenu)
-//                menus.plus(newMenu)
-//            }
-//        }
-//        roleRepository.save(role)
-//        return convertRoleToRoleResponse(roleRepository.save(role))
-//    }
 
     override fun get(idRole: Int): RoleResponse {
         val role = findRoleByIdOrThrowNotFound(idRole)
         return role.mapToRoleResponse()
     }
 
-    private fun Role.mapToRoleResponse(): RoleResponse {
-        return RoleResponse(
-            idRole = this.idRole,
-            namaRole = this.namaRole,
-            menus = this.menus.map {
-                MenuResponse(
-                    idMenu = it.idMenu,
-                    namaMenu = it.namaMenu,
-                    status = it.status
-                )
-            }
-        )
-    }
+
 
 
     private fun findRoleByIdOrThrowNotFound(idRole: Int): Role {
@@ -103,4 +110,6 @@ class RoleServiceImpl(
         }
         return false
     }
+
+
 }

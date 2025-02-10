@@ -1,6 +1,5 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.model.response
+package co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag
 
-import jakarta.validation.constraints.NotBlank
 import java.util.Date
 
 data class AuditrailResponse(

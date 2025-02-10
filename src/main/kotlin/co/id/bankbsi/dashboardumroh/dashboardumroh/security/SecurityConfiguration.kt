@@ -1,6 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.security
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.RoleRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -44,6 +44,7 @@ class SecurityConfiguration(
                     .requestMatchers(HttpMethod.GET, "/api/auditrail/**").hasAnyRole(*roles)
                     .requestMatchers(HttpMethod.POST, "/api/settings/**").hasAnyRole(*roles)
                     .requestMatchers(HttpMethod.GET, "/api/settings/**").hasAnyRole(*roles)
+                    .requestMatchers(HttpMethod.GET, "/api/dashboard/**").hasAnyRole(*roles)
                     .anyRequest()
                     .authenticated()
             }

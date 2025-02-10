@@ -4,13 +4,14 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedExce
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Auditrail
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Menu
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.mapToMenuResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.CreateMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.ListMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.menu.UpdateMenuRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.MenuResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.AuditrailRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.MenuService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.MenuResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.AuditrailRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.MenuRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.MenuService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -80,11 +81,5 @@ class MenuServiceImpl(
         }
     }
 
-    private fun Menu.mapToMenuResponse(): MenuResponse {
-        return MenuResponse(
-            idMenu = idMenu,
-            status = status,
-            namaMenu = namaMenu,
-        )
-    }
+
 }

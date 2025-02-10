@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.model.response
+package co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Role
 import java.util.Date

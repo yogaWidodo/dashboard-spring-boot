@@ -1,5 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.UserResponse
 import jakarta.persistence.*
 import java.util.Date
 
@@ -37,22 +38,17 @@ data class User(
 //    @Column(name = "password")
 //    var passwordLdap: String,
 )
-//) : UserDetails {
-//    override fun getAuthorities(): Collection<GrantedAuthority> {
-//        return listOf(SimpleGrantedAuthority("ROLE_${idRole.namaRole}"))
-//    }
-//
-//    override fun getPassword(): String {
-//        return passwordLdap
-//    }
-//
-//    override fun getUsername(): String {
-//        return userLdap
-//    }
-//
-//
-//    override fun isAccountNonExpired(): Boolean = true
-//    override fun isAccountNonLocked(): Boolean = true
-//    override fun isCredentialsNonExpired(): Boolean = true
-//    override fun isEnabled(): Boolean = true
+
+fun User.mapToUserResponse(): UserResponse {
+    return UserResponse(
+        idUser = this.idUser,
+        userLdap = this.userLdap,
+        nama = this.nama,
+        unit = this.unit,
+        role = this.idRole,
+        status = this.status,
+        createdAt = this.createdAt,
+        lastLogin = this.lastLogin,
+    )
+}
 

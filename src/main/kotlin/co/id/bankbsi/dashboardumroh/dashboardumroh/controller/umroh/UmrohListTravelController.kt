@@ -3,10 +3,10 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.umroh
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.listtravel.ListTravelListRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.listtravel.UmrohListTravelRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.listtravel.UmrohListTravelUpdate
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.ApprovalResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.umroh.UmrohListTravelResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohListTravelService
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -36,12 +36,13 @@ class UmrohListTravelController(
         )
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/{userLdap}")
     fun updateTravel(
         @PathVariable id: String,
+        @PathVariable userLdap: String,
         @RequestBody body: UmrohListTravelUpdate
-    ): WebResponse<UmrohListTravelResponse> {
-        val response = service.update(id, body)
+    ): WebResponse<ApprovalResponse> {
+        val response = service.update(id, userLdap, body)
         return WebResponse(
             code = 200,
             status = "OK",

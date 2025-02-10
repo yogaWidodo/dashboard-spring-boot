@@ -1,16 +1,13 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.umroh
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.RemarkApproval
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.setting.SettingListRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.setting.UmrohSettingRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.setting.UmrohSettingUpdate
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.ApprovalResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.ApprovalResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.umroh.UmrohSettingResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohSettingService
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping

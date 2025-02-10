@@ -1,14 +1,14 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.service
+package co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.CreateAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.ListAuditrailRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.auditrail.UpdateAuditrailRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.AuditrailResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.AuditrailResponse
 
 interface AuditrailService {
-    fun create(auditrailRequest: CreateAuditrailRequest):AuditrailResponse
+    fun create(auditrailRequest: CreateAuditrailRequest): AuditrailResponse
     fun listAuditrail(listAuditrailRequest: ListAuditrailRequest):List<AuditrailResponse>
-    fun update(id:Int, auditrailRequest: UpdateAuditrailRequest):AuditrailResponse
-    fun delete(id:Int):AuditrailResponse
-    fun get(id:Int):AuditrailResponse
+    fun update(id:Int, auditrailRequest: UpdateAuditrailRequest): AuditrailResponse
+    fun delete(id:Int): AuditrailResponse
+    fun get(id:Int): AuditrailResponse
 }

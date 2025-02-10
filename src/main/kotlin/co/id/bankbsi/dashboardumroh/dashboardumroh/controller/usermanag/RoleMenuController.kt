@@ -2,8 +2,7 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.RoleMenuService
-import org.springframework.security.access.prepost.PreAuthorize
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.RoleMenuService
 import org.springframework.web.bind.annotation.*
 
 @RestController

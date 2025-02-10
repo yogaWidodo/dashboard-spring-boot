@@ -1,13 +1,12 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.controller.usermanag
 
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.UpdateUserMenuRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.CreateUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.ListUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.UpdateUserRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.UserResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.ApprovalResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.UserResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.WebResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.UserService
-import org.springframework.security.access.prepost.PreAuthorize
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.UserService
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -15,9 +14,9 @@ import org.springframework.web.bind.annotation.*
 //@PreAuthorize("hasRole('ADMIN') or hasRole('OFFICER') or hasRole('SPV') or hasRole('REPORTING')")
 class UserController(val userService: UserService) {
 
-    @PostMapping("user")
-    fun createUser(@RequestBody body: CreateUserRequest): WebResponse<UserResponse> {
-        val userResponse = userService.create(body)
+    @PostMapping("user/{userLdap}")
+    fun createUser(@RequestBody body: CreateUserRequest, @PathVariable userLdap:String): WebResponse<ApprovalResponse> {
+        val userResponse = userService.create(body, userLdap)
         return WebResponse(
             code = 200,
             status = "OK",

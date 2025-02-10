@@ -3,9 +3,9 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.role.UpdateRoleMenuRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.MenuRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.RoleMenuService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.MenuRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.RoleRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.RoleMenuService
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.repository
+package co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Auditrail
 import org.springframework.data.domain.Page

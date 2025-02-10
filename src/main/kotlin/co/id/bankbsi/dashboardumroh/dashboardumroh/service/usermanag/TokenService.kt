@@ -1,4 +1,4 @@
-package co.id.bankbsi.dashboardumroh.dashboardumroh.service
+package co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag
 
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*

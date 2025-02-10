@@ -1,17 +1,18 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.DataAlreadyAssignedException
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.User
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Auditrail
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.*
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.CreateUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.ListUserRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.user.UpdateUserRequest
-import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.UserResponse
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.AuditrailRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.RoleRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.UserRepository
-import co.id.bankbsi.dashboardumroh.dashboardumroh.service.UserService
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.ApprovalResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.UserResponse
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.ApprovalRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.AuditrailRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.RoleRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.UserRepository
+import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.UserService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.domain.PageRequest
@@ -27,29 +28,58 @@ class UserServiceImpl(
     val validationUtill: ValidationUtill,
     val roleRepository: RoleRepository,
     val auditrailRepository: AuditrailRepository,
+    val approvalRepository: ApprovalRepository,
     val encoder: PasswordEncoder
 ) : UserService {
 
     private val formatter: SimpleDateFormat by lazy {
         SimpleDateFormat("EEEE, d MMM HH:mm:ss z yyyy", Locale("id", "ID"))
     }
-    override fun create(createUserRequest: CreateUserRequest): UserResponse {
-        validationUtill.validate(createUserRequest)
-        val role = roleRepository.findById(createUserRequest.idRole).orElseThrow()
-        isUserExist(createUserRequest.userLdap)
-        val user = User(
-            nama = encoder.encode(createUserRequest.nama),
-            unit = createUserRequest.unit,
-            idRole = role,
-            status = createUserRequest.status,
-            createdAt = Date(),
-            lastLogin = Date(),
-            userLdap = createUserRequest.userLdap,
-//            passwordLdap = encoder.encode(createUserRequest.password)
-        )
-        userRepository.save(user)
-        return user.mapToUserResponse()
-    }
+
+//    override fun create(createUserRequest: CreateUserRequest, userLdap: String): UserResponse {
+//        validationUtill.validate(createUserRequest)
+//        val role = roleRepository.findById(createUserRequest.idRole).orElseThrow()
+//        isUserExist(createUserRequest.userLdap)
+//        val user = User(
+//            nama = encoder.encode(createUserRequest.nama),
+//            unit = createUserRequest.unit,
+//            idRole = role,
+//            status = createUserRequest.status,
+//            createdAt = Date(),
+//            lastLogin = Date(),
+//            userLdap = createUserRequest.userLdap,
+////            passwordLdap = encoder.encode(createUserRequest.password)
+//        )
+//        userRepository.save(user)
+//        return user.mapToUserResponse()
+//    }
+override fun create(createUserRequest: CreateUserRequest, userLdap: String): ApprovalResponse {
+    validationUtill.validate(createUserRequest)
+    val role = roleRepository.findById(createUserRequest.idRole).orElseThrow()
+    isUserExist(createUserRequest.userLdap)
+    val user = userRepository.findByUserLdap(userLdap)?: throw NotFoundException()
+    val dataAfter = mapOf(
+        "nama" to createUserRequest.nama,
+        "unit" to createUserRequest.unit,
+        "idRole" to role.idRole,
+        "status" to createUserRequest.status,
+        "userLdap" to createUserRequest.userLdap
+    )
+
+    val approval = Approval(
+        maker = user.userLdap,
+        approver = "",
+        status = "Pending",
+        typeData = "Add User",
+        dataBefore = "",
+        dataAfter = dataAfter.toString(),
+        remarkApproval = "",
+        createAt = Date(),
+        updateAt = Date()
+    )
+    approvalRepository.save(approval)
+    return approval.mapToApprovalResponse()
+}
 
     override fun get(userLdap: String): UserResponse {
         val user = findUserByUserNameOrThrowNotFound(userLdap)
@@ -110,19 +140,4 @@ class UserServiceImpl(
         }
         return false
     }
-
-    private fun User.mapToUserResponse(): UserResponse {
-        return UserResponse(
-            idUser = this.idUser,
-            userLdap = this.userLdap,
-            nama = this.nama,
-            unit = this.unit,
-            role = this.idRole,
-            status = this.status,
-            createdAt = this.createdAt,
-            lastLogin = this.lastLogin,
-        )
-    }
-
-
 }
