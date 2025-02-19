@@ -35,6 +35,12 @@ class SecurityConfiguration(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
+                    .requestMatchers(
+                        "/v3/api-docs/**",    // Allow access to OpenAPI docs
+                        "/swagger-ui/**",     // Allow access to Swagger UI
+                        "/swagger-ui.html",
+                        "/api/v1/users"
+                    ).permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/auth", "/api/auth/refresh", "/api/error")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole(*roles)
@@ -55,6 +61,8 @@ class SecurityConfiguration(
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
     }
+
+
 
     @Bean
     fun corsConfiguration(): CorsConfigurationSource {
