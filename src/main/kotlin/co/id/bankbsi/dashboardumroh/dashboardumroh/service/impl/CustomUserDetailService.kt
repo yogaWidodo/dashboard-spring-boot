@@ -15,11 +15,14 @@ class CustomUserDetailService(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository
 ) : UserDetailsService {
-    override fun loadUserByUsername(userLdap: String): UserDetails =
-        userRepository.findByUserLdap(userLdap)
-            ?.mapToUserDetails()
-            ?: throw UsernameNotFoundException("User not found")
-
+    override fun loadUserByUsername(userLdap: String): UserDetails {
+        val user = userRepository.findByUserLdap(userLdap)
+        if (user != null && user.status == "ACTIVE") {
+            return user.mapToUserDetails()
+        } else {
+            throw UsernameNotFoundException("User not found")
+        }
+    }
 
     private fun ApplicationUser.mapToUserDetails(): UserDetails {
         val roles = roleRepository.findAll().map { it.namaRole }
