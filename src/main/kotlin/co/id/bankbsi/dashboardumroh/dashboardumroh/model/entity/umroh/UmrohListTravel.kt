@@ -1,5 +1,6 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.umroh
 
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.umroh.UmrohListTravelResponse
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -39,3 +40,16 @@ data class UmrohListTravel(
     @Column(name = "TELP")
     var telp: String
 )
+fun UmrohListTravel.toResponse(): UmrohListTravelResponse =
+    UmrohListTravelResponse(
+        idList = this.idList,
+        kdTravel = this.kdTravel,
+        namaTravel = this.namaTravel,
+        alamat = this.alamat,
+        kota = this.kota,
+        email = this.email,
+        website = this.website,
+        logoTravel = this.logoTravel,
+        background = this.background,
+        telp = this.telp
+    )

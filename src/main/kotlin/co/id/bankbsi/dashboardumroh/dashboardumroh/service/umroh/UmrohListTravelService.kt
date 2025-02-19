@@ -15,6 +15,4 @@ interface UmrohListTravelService {
         userLdap: String,
         umrohListTravelUpdate: UmrohListTravelUpdate
     ): ApprovalResponse
-
-    fun delete(id: String)
 }

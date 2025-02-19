@@ -2,7 +2,9 @@ package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.umrohImpl
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.umroh.UmrohListTravel
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.umroh.toResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Approval
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.mapToApprovalResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.listtravel.ListTravelListRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.listtravel.UmrohListTravelRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.listtravel.UmrohListTravelUpdate
@@ -13,6 +15,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.UserRepo
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.umroh.UmrohListTravelRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.umroh.UmrohListTravelService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
+import com.google.gson.JsonObject
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.util.*
@@ -62,37 +65,42 @@ class UmrohListTravelImpl(
         umrohListTravelUpdate: UmrohListTravelUpdate
     ): ApprovalResponse {
         validationUtill.validate(umrohListTravelUpdate)
-        val travel = findUmrohListTravelOrThrowNotFound(id)
+        val travel = umrohListTravelRepository.findById(id).orElseThrow { NotFoundException() }
         val user = userRepository.findByUserLdap(userLdap) ?: throw NotFoundException()
-        val dataBefore = mapOf(
-            "idList" to travel.idList,
-            "namaTravel" to travel.namaTravel,
-            "alamat" to travel.alamat,
-            "kota" to travel.kota,
-            "email" to travel.email,
-            "website" to travel.website,
-            "logoTravel" to travel.logoTravel,
-            "background" to travel.background,
-            "telp" to travel.telp
-        )
-        val dataAfter = mapOf(
-            "idList" to travel.idList,
-            "namaTravel" to umrohListTravelUpdate.namaTravel,
-            "alamat" to umrohListTravelUpdate.alamat,
-            "kota" to umrohListTravelUpdate.kota,
-            "email" to umrohListTravelUpdate.email,
-            "website" to umrohListTravelUpdate.website,
-            "logoTravel" to umrohListTravelUpdate.logoTravel,
-            "background" to umrohListTravelUpdate.background,
-            "telp" to umrohListTravelUpdate.telp
-        )
+//        val dataBefore = "{idList=${travel.idList}, namaTravel=${travel.namaTravel}, alamat=${travel.alamat}, kota=${travel.kota}, email=${travel.email}, website=${travel.website}, logoTravel=${travel.logoTravel}, background=${travel.background}, telp=${travel.telp}}"
+//        val dataAfter = "{idList=${travel.idList}, namaTravel=${umrohListTravelUpdate.namaTravel}, alamat=${umrohListTravelUpdate.alamat}, kota=${umrohListTravelUpdate.kota}, email=${umrohListTravelUpdate.email}, website=${umrohListTravelUpdate.website}, logoTravel=${umrohListTravelUpdate.logoTravel}, background=${umrohListTravelUpdate.background}, telp=${umrohListTravelUpdate.telp}}"
+        val travelJsonDataBefore = JsonObject().apply {
+            addProperty("idList", travel.idList)
+            addProperty("namaTravel", travel.namaTravel)
+            addProperty("alamat", travel.alamat)
+            addProperty("kota", travel.kota)
+            addProperty("email", travel.email)
+            addProperty("website", travel.website)
+            addProperty("logoTravel", travel.logoTravel)
+            addProperty("background", travel.background)
+            addProperty("telp", travel.telp)
+        }
+
+        val travelJsonDataAfter = JsonObject().apply {
+            addProperty("idList", travel.idList)
+            addProperty("namaTravel", umrohListTravelUpdate.namaTravel)
+            addProperty("alamat", umrohListTravelUpdate.alamat)
+            addProperty("kota", umrohListTravelUpdate.kota)
+            addProperty("email", umrohListTravelUpdate.email)
+            addProperty("website", umrohListTravelUpdate.website)
+            addProperty("logoTravel", umrohListTravelUpdate.logoTravel)
+            addProperty("background", umrohListTravelUpdate.background)
+            addProperty("telp", umrohListTravelUpdate.telp)
+        }
+
+
         val approval = Approval(
             maker = user.userLdap,
             approver = "",
             status = "Pending",
             typeData = "Edit Umroh List Travel",
-            dataBefore = dataBefore.toString(),
-            dataAfter = dataAfter.toString(),
+            dataBefore = travelJsonDataBefore.toString(),
+            dataAfter = travelJsonDataAfter.toString(),
             createAt = Date(),
             updateAt = Date(),
             remarkApproval = ""
@@ -101,40 +109,7 @@ class UmrohListTravelImpl(
         return approval.mapToApprovalResponse()
     }
 
-    override fun delete(id: String) {
-        val travel = findUmrohListTravelOrThrowNotFound(id)
-        umrohListTravelRepository.delete(travel)
-    }
 
-
-    private fun UmrohListTravel.toResponse(): UmrohListTravelResponse =
-        UmrohListTravelResponse(
-            idList = this.idList,
-            kdTravel = this.kdTravel,
-            namaTravel = this.namaTravel,
-            alamat = this.alamat,
-            kota = this.kota,
-            email = this.email,
-            website = this.website,
-            logoTravel = this.logoTravel,
-            background = this.background,
-            telp = this.telp
-        )
-
-    private fun Approval.mapToApprovalResponse(): ApprovalResponse {
-        return ApprovalResponse(
-            idApproval = idApproval,
-            maker = maker,
-            approver = approver,
-            status = status,
-            typeData = typeData,
-            dataBefore = dataBefore,
-            dataAfter = dataAfter,
-            createAt = createAt,
-            updateAt = updateAt,
-            remarkApproval = remarkApproval
-        )
-    }
     private fun findUmrohListTravelOrThrowNotFound(id: String): UmrohListTravel {
         return umrohListTravelRepository.findById(id)
             .orElseThrow { IllegalArgumentException("UmrohListTravel not found with id: $id") }
