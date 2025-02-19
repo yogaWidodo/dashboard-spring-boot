@@ -25,10 +25,10 @@ data class Approval(
     @Column(name = "type_data")
     var typeData: String,
 
-    @Column(name = "data_before")
+    @Column(name = "data_before", length = 500)
     var dataBefore: String,
 
-    @Column(name = "data_after")
+    @Column(name = "data_after", length = 500)
     var dataAfter: String,
 
     @Column(name = "create_at")
@@ -37,7 +37,7 @@ data class Approval(
     @Column(name = "update_at")
     var updateAt: Date,
 
-    @Column(name = "remark_approval")
+    @Column(name = "remark_approval", length = 500)
     var remarkApproval: String
 )
 

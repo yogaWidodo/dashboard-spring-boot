@@ -7,7 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 interface ApprovalRepository:JpaRepository<Approval,Int> {
-    //select all approval order by created date desc
+
     @Query("select a from Approval a order by a.createAt desc")
     fun findAllApprovalByCreateAtDesc(pageable: Pageable): Page<Approval>
+
+    @Query("select count(a.idApproval) from Approval a where a.status = :status")
+    fun countApprovalByStatus(status: String): Int
 }

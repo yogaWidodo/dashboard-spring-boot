@@ -1,6 +1,7 @@
 package co.id.bankbsi.dashboardumroh.dashboardumroh.service.impl.usermanag
 
 import co.id.bankbsi.dashboardumroh.dashboardumroh.error.NotFoundException
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.umroh.UmrohListTravel
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Approval
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.Role
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.entity.usermanag.User
@@ -9,6 +10,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.Create
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.ListApprovalRequest
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.RemarkApproval
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.approval.UpdateApprovalRequest
+import co.id.bankbsi.dashboardumroh.dashboardumroh.model.request.umroh.listtravel.UmrohListTravelUpdate
 import co.id.bankbsi.dashboardumroh.dashboardumroh.model.response.usermanag.ApprovalResponse
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.ApprovalRepository
 import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.usermanag.MenuRepository
@@ -19,6 +21,7 @@ import co.id.bankbsi.dashboardumroh.dashboardumroh.repository.umroh.UmrohSetting
 import co.id.bankbsi.dashboardumroh.dashboardumroh.service.usermanag.ApprovalService
 import co.id.bankbsi.dashboardumroh.dashboardumroh.validation.ValidationUtill
 import com.google.gson.JsonParser
+import com.google.gson.JsonSyntaxException
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -167,13 +170,13 @@ class ApprovalServiceImpl(
         approvalRepository.save(approval)
         return true
     }
-
     override fun approveChangeTravel(idApproval: Int, userLdap: String): Boolean {
         val approval = approvalRepository.findById(idApproval).orElseThrow()
         val user = userRepository.findByUserLdap(userLdap) ?: throw NotFoundException()
         if (approval.status != "Pending") {
             return false
         }
+
         val jsonObjectAfter = JsonParser.parseString(approval.dataAfter).asJsonObject
         val idList = jsonObjectAfter.get("idList")?.asString ?: throw NotFoundException()
         val namaTravel = jsonObjectAfter.get("namaTravel")?.asString ?: throw NotFoundException()
@@ -185,19 +188,18 @@ class ApprovalServiceImpl(
         val background = jsonObjectAfter.get("background")?.asString ?: throw NotFoundException()
         val telp = jsonObjectAfter.get("telp")?.asString ?: throw NotFoundException()
 
-
         val travel = umrohListTravelRepository.findById(idList).orElseThrow() ?: throw NotFoundException()
-        travel.namaTravel = namaTravel
-        travel.alamat = alamat
-        travel.kota = kota
-        travel.email = email
-        travel.website = website
-        travel.logoTravel = logoTravel
-        travel.background = background
-        travel.telp = telp
-
+        travel.apply {
+            this.namaTravel = namaTravel
+            this.alamat = alamat
+            this.kota = kota
+            this.email = email
+            this.website = website
+            this.logoTravel = logoTravel
+            this.background = background
+            this.telp = telp
+        }
         umrohListTravelRepository.save(travel)
-
         approval.approver = user.userLdap
         approval.status = "Approved"
         approval.updateAt = Date()
@@ -266,8 +268,6 @@ class ApprovalServiceImpl(
         approvalRepository.save(approval)
         return true
     }
-
-
 
 
     private fun findApprovalByIdOrThrowNotFound(id: Int): Approval {
