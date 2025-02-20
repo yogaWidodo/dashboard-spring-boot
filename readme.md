@@ -1,306 +1,72 @@
-# API Spec
+# Dashboard Umroh Backend Application
 
-## Authentication
+## Overview
+This is the backend application for the Dashboard Umroh system, built with:
+- Kotlin
+- Spring Boot
+- PostgreSQL
+- JWT Authentication
 
-All API must use this authentication
-Request :
+## Features
+- User management
+- Role-based access control
+- Umroh package management
+- Transaction processing
+- Dashboard analytics
 
-- Header :
-- X-Api-Key : "your secret api key"
+## API Documentation
+API documentation is automatically generated using Swagger/SpringDoc. Access it at:
+`http://localhost:8080/swagger-ui.html` when the application is running.
 
-# USER API SPEC
+## Getting Started
 
-## Create User
+### Prerequisites
+- Java 17+
+- PostgreSQL
+- Gradle
 
-Request :
-
-- Method : POST
-- Endpoint : `/api/user`
-- Header :
-- Content-Type: application/json
-- Accept: application/json
-- Body :
-
-```json
-
-{
-  "id_user": "string, unique",
-  "user_ldap": "string",
-  "nama": "String",
-  "unit": "string",
-  "id_role": "String",
-  "status": "String"
-}
+### Installation
+1. Clone the repository
+2. Configure database settings in `application.yaml`
+3. Run the application:
+```bash
+./gradlew bootRun
 ```
 
-Response :
-
-```json
-
-{
-  "code": "number",
-  "status": "string",
-  "data": {
-    "idUser": "String",
-    "userLdap": "String",
-    "nama": "String",
-    "idRole": "String",
-    "unit": "String",
-    "status": "String",
-    "createdAt": "Date",
-    "lastLogin": "Date"
-  }
-}
+### Environment Variables
+```bash
+DATABASE_URL=jdbc:postgresql://localhost:5432/umroh_db
+DATABASE_USERNAME=your_db_user
+DATABASE_PASSWORD=your_db_password
+JWT_SECRET=your_jwt_secret
 ```
 
-## Get User
-
-Request :
-
-- Method : GET
-- Endpoint : `/api/user/{id_user}`
-- Header :
-- Accept: application/json
-  Response :
-
-```json
-
-{
-  "code": "number",
-  "status": "string",
-  "data": {
-    "idUser": "String",
-    "userLdap": "String",
-    "nama": "String",
-    "idRole": "String",
-    "unit": "String",
-    "status": "String",
-    "createdAt": "Date",
-    "lastLogin": "Date"
-  }
-}
+### Running with Docker
+```bash
+docker-compose up --build
 ```
 
-## Update User
-
-Request :
-
-- Method : PUT
-- Endpoint : `/api/user/{id_user}`
-- Header :
-- Content-Type: application/json
-- Accept: application/json
-- Body :
-
-```json
-
-{
-  "name": "string",
-  "unit": "string",
-  "status": "string"
-}
+## Project Structure
+```
+src/
+├── main/
+│   ├── kotlin/
+│   │   └── co/id/bankbsi/dashboardumroh/
+│   │       ├── controller/ - API controllers
+│   │       ├── service/ - Business logic
+│   │       ├── repository/ - Database access
+│   │       ├── model/ - Data models
+│   │       └── security/ - Authentication
+├── resources/
+│   ├── application.yaml - Configuration
 ```
 
-Response :
+## Contributing
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
 
-```json
-
-{
-  "code": "number",
-  "status": "string",
-  "data": {
-    "idUser": "String",
-    "userLdap": "String",
-    "nama": "String",
-    "idRole": "String",
-    "unit": "String",
-    "status": "String",
-    "createdAt": "Date",
-    "lastLogin": "Date"
-  }
-}
-```
-
-## List User
-
-Request :
-
-- Method : GET
-- Endpoint : `/api/user`
-- Header :
-- Accept: application/json
-- Query Param :
-- size : number,
-- page : number
-  Response :
-
-```json
-
-{
-  "code": "number",
-  "status": "string",
-  "data": [
-    {
-      "idUser": "String",
-      "userLdap": "String",
-      "nama": "String",
-      "idRole": "String",
-      "unit": "String",
-      "status": "String",
-      "createdAt": "Date",
-      "lastLogin": "Date"
-    }
-  ]
-}
-
-
-```
-
-## Delete User
-
-Request :
-
-- Method : DELETE
-- Endpoint : `/api/user/{id_user}`
-- Header :
-- Accept: application/json
-  Response :
-
-```json
-
-{
-  "code": "number",
-  "status": "string"
-}
-```
-
-# ROLE API SPEC
-
-## Create Role
-
-Request :
-
-- Method : POST
-- Endpoint : `/api/role`
-- Header :
-- Content-Type: application/json
-- Accept: application/json
-- Body :
-
-```json
-
-{
-  "idRole": "String",
-  "namaRole": "String",
-  "idMenu": "Array <String>"
-}
-```
-
-Response :
-
-```json
-
-{
-  "code": "number",
-  "status": "string",
-  "data": {
-    "idRole": "String",
-    "namaRole": "String",
-    "idMenu": [
-      {
-        "idMenu": "String",
-        "namaMenu": "String",
-        "status": "String"
-      }
-    ]
-  }
-}
-```
-
-## Get Role
-
-Request :
-
-- Method : GET
-- Endpoint : `/api/role/{id_role}`
-- Header :
-- Accept: application/json
-  Response :
-
-```json
-
-{
-  "code": "number",
-  "status": "string",
-  "data": {
-    "idRole": "String",
-    "namaRole": "String",
-    "idMenu": [
-      {
-        "idMenu": "String",
-        "namaMenu": "String",
-        "status": "String"
-      }
-    ]
-  }
-}
-```
-
-## Update Role
-
-Request :
-
-- Method : PUT
-- Endpoint : `/api/role/{id_role}/menu`
-- Header :
-- Content-Type: application/json
-- Accept: application/json
-- Body :
-
-```json
-
-{
-  "namaRole": "String",
-  "oldMenu": "String",
-  "newMenu": "String"
-}
-```
-
-Response :
-
-```json
-
-{
-  "code": "number",
-  "status": "string",
-  "data": {
-    "idRole": "String",
-    "namaRole": "String",
-    "idMenu": [
-      {
-        "idMenu": "String",
-        "namaMenu": "String",
-        "status": "String"
-      }
-    ]
-  }
-}
-
-```
-## Delete Role
-
-Request :
-
-- Method : DELETE
-- Endpoint : `/api/role/{id_role}`
-- Header :
-- Accept: application/json
-  Response :
-
-```json
-
-{
-  "code": "number",
-  "status": "string"
-}
-```
+## Contact
+For support, please contact [your email/contact info]
